@@ -10,10 +10,9 @@ from neuralfp.modules.encoder import *
 # v = h/d
 
 class Neuralfp(nn.Module):
-    def __init__(self, encoder, n_features):
+    def __init__(self, encoder):
         super(Neuralfp, self).__init__()
         self.encoder = encoder
-        self.n_features = n_features
         self.projector = nn.ModuleList()
         for _ in range(d):
             de_block = nn.Sequential(nn.Linear(v,u),

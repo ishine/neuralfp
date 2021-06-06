@@ -8,7 +8,7 @@ v = h/d
 chang_fp = [d,d,2*d,2*d,4*d,4*d,h,h]
 
 class Encoder(nn.Module):
-	def __init__(self, in_channels, out_channels, stride=2, kernel_size=3):
+	def __init__(self, in_channels=1, stride=2, kernel_size=3):
 		super(Encoder, self).__init__()
 		self.in_channels = in_channels
 		self.stride = stride
