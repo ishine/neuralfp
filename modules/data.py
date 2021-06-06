@@ -18,7 +18,7 @@ class NeuralfpDataset(Dataset):
             self.filenames  = json.load(json_file)
         # self.input_shape = input_shape
         self.ignore_idx = []
-        self.mixer = torchaudio.transforms.DownmixMono()
+        # self.mixer = torchaudio.transforms.DownmixMono()
         
     def __getitem__(self, idx):
         if idx in self.ignore_idx:
@@ -26,7 +26,7 @@ class NeuralfpDataset(Dataset):
         
         datapath = self.path + "/" + self.filenames[idx]
         audio, sr = torchaudio.load(datapath)
-        audioData = self.mixer(audio[0])
+        audioData = torch.mean(audio, dim=0, keepdim=True)
         audioData = audioData[::(int)(sr/SAMPLE_RATE)]     # Downsampling
         r = np.random.randint(0,len(audioData))
         offset_frame = sr*offset
