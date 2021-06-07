@@ -4,7 +4,7 @@ import torch.nn as nn
 d = 128
 h = 1024
 u = 32
-v = h/d
+v = int(h/d)
 chang_fp = [d,d,2*d,2*d,4*d,4*d,h,h]
 
 class Encoder(nn.Module):
