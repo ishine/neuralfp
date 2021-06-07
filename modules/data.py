@@ -29,7 +29,7 @@ class NeuralfpDataset(Dataset):
         audioData = torch.mean(audio, dim=0, keepdim=True)
         audioData = audioData[::(int)(sr/SAMPLE_RATE)]     # Downsampling
         r = np.random.randint(0,len(audioData))
-        offset_frame = sr*offset
+        offset_frame = int(sr*offset)
         audioData = audioData[r:r+offset_frame]               # 1.25 second samples
         
         # if audio.shape[1] < self.input_shape[1]:
