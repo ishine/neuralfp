@@ -24,7 +24,7 @@ class NeuralfpDataset(Dataset):
         if idx in self.ignore_idx:
             return self[idx + 1]
         
-        datapath = self.path + "/" + self.filenames[idx]
+        datapath = self.path + "/" + self.filenames[str(idx)]
         audio, sr = torchaudio.load(datapath)
         audioData = torch.mean(audio, dim=0, keepdim=True)
         audioData = audioData[::(int)(sr/SAMPLE_RATE)]     # Downsampling
