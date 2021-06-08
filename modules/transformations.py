@@ -3,8 +3,8 @@ from audiomentations import Compose,Shift,PitchShift,TimeStretch,AddImpulseRespo
 
 class TransformNeuralfp:
     
-    def __init__(self, ir_dir, noise_dir):
-        
+    def __init__(self, ir_dir, noise_dir, sample_rate):
+        self.sample_rate = sample_rate
         self.train_transform = Compose([
             Shift(min_fraction=-0.2, max_fraction=0.2, rollover=False),
             PitchShift(min_semitones=-2, max_semitones=2, p=0.5),
@@ -19,4 +19,4 @@ class TransformNeuralfp:
             ])
             
     def __call__(self, x):
-        return self.train_transform(x), self.train_transform(x)
+        return self.train_transform(x,self.sample_rate), self.train_transform(x,self.sample_rate)

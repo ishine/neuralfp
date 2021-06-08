@@ -37,5 +37,5 @@ class Neuralfp(nn.Module):
         z_j = F.normalize(torch.cat(splitheads, dim=0), p=2)
         
         return h_i, h_j, z_i, z_j
-        
+
 
