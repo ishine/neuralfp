@@ -17,6 +17,8 @@ class Encoder(nn.Module):
 		
 	def forward(self, x):
 		x = self.conv_layers(x)
+		x = x.reshape(x.shape[0],-1)
+		return x
 		
 	
 	def create_conv_layers(self, architecture):
@@ -25,14 +27,15 @@ class Encoder(nn.Module):
 		kernel_size = self.kernel_size
 		stride = self.stride
 		
-		for x in architecture:
-			out_channels = x
-			layers.append(nn.Conv2d(in_channels, out_channels, (1,kernel_size), (1,stride), padding=0))
-			layers.append(nn.LayerNorm(out_channels))
+		for channels in architecture:
+            
+			layers.append(nn.Conv2d(in_channels=in_channels, out_channels=channels, kernel_size=(1,kernel_size), stride=(1,stride), padding=(0,1)))
+			layers.append(nn.InstanceNorm2d(channels))
 			layers.append(nn.ReLU())
-			layers.append(nn.Conv2d(in_channels, out_channels, (kernel_size,1), (stride,1), padding=0))
-			layers.append(nn.LayerNorm(out_channels))
+			layers.append(nn.Conv2d(in_channels=channels, out_channels=channels, kernel_size=(kernel_size,1), stride=(stride,1), padding=(1,0)))
+			layers.append(nn.InstanceNorm2d(channels))
 			layers.append(nn.ReLU())
+			in_channels = channels
 
 		return nn.Sequential(*layers)
 			
