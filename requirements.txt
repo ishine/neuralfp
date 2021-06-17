@@ -1,0 +1,4 @@
+gdown
+torchaudio==0.8.1
+audiomentations[extras]
+pytorch-metric-learning[with-hooks]
