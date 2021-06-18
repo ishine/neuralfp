@@ -8,7 +8,7 @@ import argparse
 # Neuralfp
 from neuralfp.modules.data import NeuralfpDataset
 from neuralfp.modules.transformations import TransformNeuralfp
-from neuralfp import Neuralfp
+from neuralfp.neuralfp import Neuralfp
 import neuralfp.modules.encoder as encoder
 
 # pytorch metric learning
