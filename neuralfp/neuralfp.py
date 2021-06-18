@@ -7,7 +7,7 @@ from neuralfp.modules.encoder import *
 # d = 128
 # h = 1024
 # u = 32
-# v = h/d
+# v = int(h/d)
 
 class Neuralfp(nn.Module):
     def __init__(self, encoder):
