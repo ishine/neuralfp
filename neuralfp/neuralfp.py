@@ -2,12 +2,12 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torchvision
-from neuralfp.modules.encoder import *
+# from neuralfp.modules.encoder import *
 
-# d = 128
-# h = 1024
-# u = 32
-# v = int(h/d)
+d = 128
+h = 1024
+u = 32
+v = int(h/d)
 
 class Neuralfp(nn.Module):
     def __init__(self, encoder):
