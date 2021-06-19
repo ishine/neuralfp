@@ -26,11 +26,10 @@ parser.add_argument('--seed', default=None, type=int,
 # Directories
 root = os.path.dirname(__file__)
 model_folder = os.path.join(root,"model")
-gtzan_dir = '/gdrive/MyDrive/gtzan_genre/genres'
-parent_dir = '/gdrive/MyDrive/neuralfp_datasets'
-json_dir = os.path.join(root,"datasets/gtzan.dir")
-ir_dir = '/gdrive/MyDrive/neuralfp_datasets/augmentation_datasets/ir_filters'
-noise_dir = '/gdrive/MyDrive/neuralfp_datasets/augmentation_datasets/noise'
+data_dir = os.path.join(root,"data/fma_10k")
+json_dir = os.path.join(root,"data/fma.json")
+ir_dir = os.path.join(root,'augmentation_datasets/ir_filters')
+noise_dir = os.path.join(root,'augmentation_datasets/noise')
 
 device = torch.device("cuda")
 
@@ -94,10 +93,10 @@ def main():
         torch.backends.cudnn.deterministic = True
         torch.backends.cudnn.benchmark = False
         
-    train_dataset = NeuralfpDataset(path=gtzan_dir, json_dir=json_dir, transform=TransformNeuralfp(ir_dir=ir_dir, noise_dir=noise_dir,sample_rate=8000))
+    train_dataset = NeuralfpDataset(path=data_dir, json_dir=json_dir, transform=TransformNeuralfp(ir_dir=ir_dir, noise_dir=noise_dir,sample_rate=8000))
     train_loader = torch.utils.data.DataLoader(
         train_dataset, batch_size=batch_size, shuffle=True,
-        num_workers=2, worker_init_fn=seed_worker, pin_memory=True, drop_last=True)
+        num_workers=24, worker_init_fn=seed_worker, pin_memory=True, drop_last=True)
     
     model = Neuralfp(encoder=encoder.Encoder()).to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
