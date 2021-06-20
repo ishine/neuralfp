@@ -53,7 +53,7 @@ def train(train_loader, model, loss_fn, optimizer):
 
         optimizer.step()
 
-        if step % 50 == 0:
+        if step % 10 == 0:
             print(f"Step [{step}/{len(train_loader)}]\t Loss: {loss.item()}")
         
 
@@ -80,7 +80,7 @@ def main():
     args = parser.parse_args()
     
     # Hyperparameters
-    batch_size = 128
+    batch_size = 256
     learning_rate = 1e-4
     num_epochs = args.epochs
     
