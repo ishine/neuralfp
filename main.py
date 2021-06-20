@@ -28,8 +28,8 @@ root = os.path.dirname(__file__)
 model_folder = os.path.join(root,"model")
 data_dir = os.path.join(root,"data/fma_10k")
 json_dir = os.path.join(root,"data/fma.json")
-ir_dir = os.path.join(root,'augmentation_datasets/ir_filters')
-noise_dir = os.path.join(root,'augmentation_datasets/noise')
+ir_dir = os.path.join(root,'data/augmentation_datasets/ir_filters')
+noise_dir = os.path.join(root,'data/augmentation_datasets/noise')
 
 device = torch.device("cuda")
 
