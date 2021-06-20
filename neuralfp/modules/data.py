@@ -30,14 +30,17 @@ class NeuralfpDataset(Dataset):
         audioData = audio.mean(dim=0)
         resampler = torchaudio.transforms.Resample(sr, SAMPLE_RATE)
         audioData = resampler(audioData)    # Downsampling
+        
+        offset_frame = int(SAMPLE_RATE*offset)
+        
+        if len(audioData) <= len(offset_frame):
+            self.ignore_idx.append(idx)
+            return self[idx + 1]
+        
         offset_frame = int(SAMPLE_RATE*offset)
         r = np.random.randint(0,len(audioData)-offset_frame)
         audioData = audioData[r:r+offset_frame]
                        
-        
-        # if audio.shape[1] < self.input_shape[1]:
-        #     self.ignore_idx.append(idx)
-        #     return self[idx + 1]
         
         audioData_i, audioData_j = self.transform(audioData.numpy())
         # print(audioData.shape,audioData_i.shape,audioData_j.shape)
