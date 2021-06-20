@@ -26,7 +26,13 @@ class NeuralfpDataset(Dataset):
             return self[idx + 1]
         
         datapath = self.path + "/" + self.filenames[str(idx)]
-        audio, sr = torchaudio.load(datapath)
+        try:
+            audio, sr = torchaudio.load(datapath)
+        except Exception:
+            print("Error loading:" + self.filenames[str(idx)])
+            self.ignore_idx.append(idx)
+            return self[idx+1]
+
         audioData = audio.mean(dim=0)
         resampler = torchaudio.transforms.Resample(sr, SAMPLE_RATE)
         audioData = resampler(audioData)    # Downsampling
