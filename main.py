@@ -80,7 +80,7 @@ def main():
     args = parser.parse_args()
     
     # Hyperparameters
-    batch_size = 640
+    batch_size = 128
     learning_rate = 1e-4
     num_epochs = args.epochs
     
