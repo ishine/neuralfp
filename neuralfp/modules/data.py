@@ -33,7 +33,7 @@ class NeuralfpDataset(Dataset):
         
         offset_frame = int(SAMPLE_RATE*offset)
         
-        if len(audioData) <= len(offset_frame):
+        if len(audioData) <= offset_frame:
             self.ignore_idx.append(idx)
             return self[idx + 1]
         
