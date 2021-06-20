@@ -97,7 +97,7 @@ def main():
     train_dataset = NeuralfpDataset(path=data_dir, json_dir=json_dir, transform=TransformNeuralfp(ir_dir=ir_dir, noise_dir=noise_dir,sample_rate=8000))
     train_loader = torch.utils.data.DataLoader(
         train_dataset, batch_size=batch_size, shuffle=True,
-        num_workers=8, worker_init_fn=seed_worker, pin_memory=True, drop_last=True)
+        num_workers=8, pin_memory=True, drop_last=True)
     
     model = Neuralfp(encoder=encoder.Encoder()).to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
