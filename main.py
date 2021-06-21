@@ -132,13 +132,13 @@ def main():
     
 
     
-    best_loss = train(train_loader, model, loss_func, optimizer)
+    best_loss = train(train_loader, model, loss_func, optimizer, criterion)
     
     # training
     model.train()
     for epoch in range(start_epoch+1, num_epochs+1):
         print("#######Epoch {}#######".format(epoch))
-        loss_epoch = train(train_loader, model, loss_func, optimizer)
+        loss_epoch = train(train_loader, model, loss_func, optimizer, criterion)
         if loss_epoch < best_loss:
             best_loss = loss_epoch
             
