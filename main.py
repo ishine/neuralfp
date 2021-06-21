@@ -9,7 +9,9 @@ import argparse
 from neuralfp.modules.data import NeuralfpDataset
 from neuralfp.modules.transformations import TransformNeuralfp
 from neuralfp.neuralfp import Neuralfp
+from neuralfp.modules import NT_Xent
 import neuralfp.modules.encoder as encoder
+
 
 # pytorch metric learning
 from pytorch_metric_learning.utils import logging_presets
@@ -34,7 +36,7 @@ noise_dir = os.path.join(root,'data/noise')
 device = torch.device("cuda")
 
 
-def train(train_loader, model, loss_fn, optimizer):
+def train(train_loader, model, loss_fn, optimizer, criterion):
     loss_epoch = 0
     for idx, (x_i, x_j) in enumerate(train_loader):
         
@@ -53,12 +55,13 @@ def train(train_loader, model, loss_fn, optimizer):
         h_i, h_j, z_i, z_j = model(x_i, x_j)
         
         # self-supervised labels for loss function
-        embeddings = torch.cat([z_i,z_j], dim=0)
-        label = torch.arange(embeddings.size(0)/2)
-        labels = torch.cat([label,label], dim=0).to(device)
-        loss = loss_fn(embeddings, labels)
+        # embeddings = torch.cat([z_i,z_j], dim=0)
+        # label = torch.arange(embeddings.size(0)/2)
+        # labels = torch.cat([label,label], dim=0).to(device)
+        loss = criterion(z_i, z_j)
+        
         if torch.count_nonzero(torch.isnan(loss)) > 0:
-            print(embeddings)
+            print(z_i)
         loss.backward()
 
         optimizer.step()
@@ -113,6 +116,7 @@ def main():
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, num_epochs, eta_min = 1e-7)
     loss_func = losses.NTXentLoss(temperature = 0.1)
+    criterion = NT_Xent(batch_size, temperature = 0.1)
 
        
     if args.resume:
