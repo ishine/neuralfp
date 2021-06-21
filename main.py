@@ -36,7 +36,15 @@ device = torch.device("cuda")
 
 def train(train_loader, model, loss_fn, optimizer):
     loss_epoch = 0
-    for step, (x_i, x_j) in enumerate(train_loader):
+    for idx, (x_i, x_j) in enumerate(train_loader):
+        
+        if idx==0:
+            overfit_x_i = x_i
+            overfit_x_j = x_j
+        else:
+            x_i = overfit_x_i
+            x_j = overfit_x_j
+            
         optimizer.zero_grad()
         x_i = x_i.to(device)
         x_j = x_j.to(device)
@@ -55,8 +63,8 @@ def train(train_loader, model, loss_fn, optimizer):
 
         optimizer.step()
 
-        if step % 10 == 0:
-            print(f"Step [{step}/{len(train_loader)}]\t Loss: {loss.item()}")
+        if idx % 10 == 0:
+            print(f"Step [{idx}/{len(train_loader)}]\t Loss: {loss.item()}")
         
 
         loss_epoch += loss.item()
@@ -138,6 +146,8 @@ def main():
             }
             save_ckp(checkpoint)
         scheduler.step()
+    
+  
         
 if __name__ == '__main__':
     main()
