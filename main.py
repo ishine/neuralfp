@@ -28,8 +28,8 @@ root = os.path.dirname(__file__)
 model_folder = os.path.join(root,"model")
 data_dir = os.path.join(root,"data/fma_10k")
 json_dir = os.path.join(root,"data/fma.json")
-ir_dir = os.path.join(root,'data/augmentation_datasets/ir_filters')
-noise_dir = os.path.join(root,'data/augmentation_datasets/noise')
+ir_dir = os.path.join(root,'data/ir_filters')
+noise_dir = os.path.join(root,'data/noise')
 
 device = torch.device("cuda")
 
@@ -49,6 +49,8 @@ def train(train_loader, model, loss_fn, optimizer):
         label = torch.arange(embeddings.size(0)/2)
         labels = torch.cat([label,label], dim=0).to(device)
         loss = loss_fn(embeddings, labels)
+        if torch.count_nonzero(torch.isnan(loss)) > 0:
+            print(embeddings)
         loss.backward()
 
         optimizer.step()
@@ -123,6 +125,7 @@ def main():
     # training
     model.train()
     for epoch in range(start_epoch+1, num_epochs+1):
+        print("#######Epoch {}#######".format(epoch))
         loss_epoch = train(train_loader, model, loss_func, optimizer)
         if loss_epoch < best_loss:
             best_loss = loss_epoch
