@@ -18,7 +18,7 @@ from pytorch_metric_learning.utils import logging_presets
 from pytorch_metric_learning import losses, miners
 
 parser = argparse.ArgumentParser(description='Neuralfp Training')
-parser.add_argument('--epochs', default=100, type=int, metavar='N',
+parser.add_argument('--epochs', default=1000, type=int, metavar='N',
                     help='number of total epochs to run')
 parser.add_argument('--resume', default='', type=str, metavar='PATH',
                     help='path to latest checkpoint (default: none)')
@@ -59,6 +59,7 @@ def train(train_loader, model, loss_fn, optimizer, criterion):
         # label = torch.arange(embeddings.size(0)/2)
         # labels = torch.cat([label,label], dim=0).to(device)
         loss = criterion(z_i, z_j)
+        print(z_i)
         
         if torch.count_nonzero(torch.isnan(loss)) > 0:
             print(z_i)
