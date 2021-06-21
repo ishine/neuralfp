@@ -30,10 +30,10 @@ class Encoder(nn.Module):
 		for channels in architecture:
             
 			layers.append(nn.Conv2d(in_channels=in_channels, out_channels=channels, kernel_size=(1,kernel_size), stride=(1,stride), padding=(0,1)))
-			layers.append(nn.InstanceNorm2d(channels))
+# 			layers.append(nn.InstanceNorm2d(channels))
 			layers.append(nn.ReLU())
 			layers.append(nn.Conv2d(in_channels=channels, out_channels=channels, kernel_size=(kernel_size,1), stride=(stride,1), padding=(1,0)))
-			layers.append(nn.InstanceNorm2d(channels))
+# 			layers.append(nn.InstanceNorm2d(channels))
 			layers.append(nn.ReLU())
 			in_channels = channels
 
