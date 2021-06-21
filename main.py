@@ -9,7 +9,7 @@ import argparse
 from neuralfp.modules.data import NeuralfpDataset
 from neuralfp.modules.transformations import TransformNeuralfp
 from neuralfp.neuralfp import Neuralfp
-from neuralfp.modules import NT_Xent
+from neuralfp.modules.nt_xent import NT_Xent
 import neuralfp.modules.encoder as encoder
 
 
