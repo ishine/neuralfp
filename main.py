@@ -59,10 +59,10 @@ def train(train_loader, model, loss_fn, optimizer, criterion):
         # label = torch.arange(embeddings.size(0)/2)
         # labels = torch.cat([label,label], dim=0).to(device)
         loss = criterion(z_i, z_j)
-        print(z_i)
+        print(x_i)
         
-        if torch.count_nonzero(torch.isnan(loss)) > 0:
-            print(z_i)
+        # if torch.count_nonzero(torch.isnan(loss)) > 0:
+        #     print(z_i)
         loss.backward()
 
         optimizer.step()
