@@ -40,12 +40,12 @@ def train(train_loader, model, loss_fn, optimizer, criterion):
     loss_epoch = 0
     for idx, (x_i, x_j) in enumerate(train_loader):
         
-        # if idx==0:
-        #     overfit_x_i = x_i
-        #     overfit_x_j = x_j
-        # else:
-        #     x_i = overfit_x_i
-        #     x_j = overfit_x_j
+        if idx==0:
+            overfit_x_i = x_i
+            overfit_x_j = x_j
+        else:
+            x_i = overfit_x_i
+            x_j = overfit_x_j
             
         optimizer.zero_grad()
         x_i = x_i.to(device)
@@ -59,8 +59,7 @@ def train(train_loader, model, loss_fn, optimizer, criterion):
         # label = torch.arange(embeddings.size(0)/2)
         # labels = torch.cat([label,label], dim=0).to(device)
         loss = criterion(z_i, z_j)
-        # print(torch.sum(h_i))
-        # print(torch.sum(z_i))
+
         
         # if torch.count_nonzero(torch.isnan(loss)) > 0:
         #     print(z_i)
