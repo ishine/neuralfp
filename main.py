@@ -40,12 +40,12 @@ def train(train_loader, model, loss_fn, optimizer, criterion):
     loss_epoch = 0
     for idx, (x_i, x_j) in enumerate(train_loader):
         
-        if idx==0:
-            overfit_x_i = x_i
-            overfit_x_j = x_j
-        else:
-            x_i = overfit_x_i
-            x_j = overfit_x_j
+        # if idx==0:
+        #     overfit_x_i = x_i
+        #     overfit_x_j = x_j
+        # else:
+        #     x_i = overfit_x_i
+        #     x_j = overfit_x_j
             
         optimizer.zero_grad()
         x_i = x_i.to(device)
