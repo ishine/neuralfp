@@ -83,7 +83,7 @@ def load_ckp(checkpoint_fpath, model, optimizer, scheduler):
     model.load_state_dict(checkpoint['state_dict'])
     optimizer.load_state_dict(checkpoint['optimizer'])
     scheduler.load_state_dict(checkpoint['scheduler'])
-    return model, optimizer, scheduler, checkpoint['epoch']
+    return model, optimizer, scheduler, checkpoint['epoch'], checkpoint['loss']
 
 def seed_worker(worker_id):
     worker_seed = torch.initial_seed() % 2**32
@@ -123,7 +123,7 @@ def main():
     if args.resume:
         if os.path.isfile(args.resume):
             print("=> loading checkpoint '{}'".format(args.resume))
-            model, optimizer, scheduler, start_epoch = load_ckp(args.resume, model, optimizer, scheduler)
+            model, optimizer, scheduler, start_epoch, loss = load_ckp(args.resume, model, optimizer, scheduler)
         else:
             print("=> no checkpoint found at '{}'".format(args.resume))
             
@@ -137,14 +137,17 @@ def main():
     
     # training
     model.train()
+    loss_log = []
     for epoch in range(start_epoch+1, num_epochs+1):
         print("#######Epoch {}#######".format(epoch))
         loss_epoch = train(train_loader, model, loss_func, optimizer, criterion)
+        loss_log.append(loss_epoch)
         if loss_epoch < best_loss:
             best_loss = loss_epoch
             
             checkpoint = {
                 'epoch': epoch,
+                'loss': loss_log,
                 'state_dict': model.state_dict(),
                 'optimizer': optimizer.state_dict(),
                 'scheduler': scheduler.state_dict()
