@@ -129,6 +129,7 @@ def main():
             
     else:
         start_epoch = 0
+        loss_log = []
         
     
 
@@ -137,7 +138,6 @@ def main():
     
     # training
     model.train()
-    loss_log = []
     for epoch in range(start_epoch+1, num_epochs+1):
         print("#######Epoch {}#######".format(epoch))
         loss_epoch = train(train_loader, model, loss_func, optimizer, criterion)
