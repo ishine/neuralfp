@@ -95,7 +95,7 @@ def main():
     args = parser.parse_args()
     
     # Hyperparameters
-    batch_size = 128
+    batch_size = 320
     learning_rate = 1e-4
     num_epochs = args.epochs
     
@@ -112,7 +112,7 @@ def main():
     train_dataset = NeuralfpDataset(path=data_dir, json_dir=json_dir, transform=TransformNeuralfp(ir_dir=ir_dir, noise_dir=noise_dir,sample_rate=8000))
     train_loader = torch.utils.data.DataLoader(
         train_dataset, batch_size=batch_size, shuffle=True,
-        num_workers=8, pin_memory=True, drop_last=True)
+        num_workers=4, pin_memory=True, drop_last=True)
     
     model = Neuralfp(encoder=encoder.Encoder()).to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
