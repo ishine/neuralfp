@@ -7,7 +7,7 @@ class TransformNeuralfp:
         self.sample_rate = sample_rate
         self.train_transform_i = Compose([
             Shift(min_fraction=-0.1, max_fraction=0.1, rollover=False),
-            # PitchShift(min_semitones=-2, max_semitones=2, p=0.5),
+            PitchShift(min_semitones=-2, max_semitones=2, p=0.5),
             # TimeStretch(min_rate=0.8, max_rate=1.25, p=0.5),
             # AddImpulseResponse(ir_path=ir_dir, p=0.6),
             FrequencyMask(min_frequency_band=0.1, max_frequency_band=0.5,p=0.8),
