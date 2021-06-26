@@ -123,7 +123,7 @@ def main():
     if args.resume:
         if os.path.isfile(args.resume):
             print("=> loading checkpoint '{}'".format(args.resume))
-            model, optimizer, scheduler, start_epoch, loss = load_ckp(args.resume, model, optimizer, scheduler)
+            model, optimizer, scheduler, start_epoch, loss_log = load_ckp(args.resume, model, optimizer, scheduler)
         else:
             print("=> no checkpoint found at '{}'".format(args.resume))
             
