@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+import numpy as np
 
 d = 128
 h = 1024
@@ -26,15 +27,19 @@ class Encoder(nn.Module):
 		in_channels = self.in_channels
 		kernel_size = self.kernel_size
 		stride = self.stride
-		
+		shape = [1,128,60]
 		for channels in architecture:
-            
+    
 			layers.append(nn.Conv2d(in_channels=in_channels, out_channels=channels, kernel_size=(1,kernel_size), stride=(1,stride), padding=(0,1)))
-# 			layers.append(nn.InstanceNorm2d(channels))
+			shape[0] = channels
+			shape[2] = int(np.ceil(shape[2]/2))
+			layers.append(nn.LayerNorm(shape))
 			layers.append(nn.ReLU())
 			layers.append(nn.Conv2d(in_channels=channels, out_channels=channels, kernel_size=(kernel_size,1), stride=(stride,1), padding=(1,0)))
-# 			layers.append(nn.InstanceNorm2d(channels))
+			shape[1] = int(np.ceil(shape[1]/2))
+			layers.append(nn.LayerNorm(shape))
 			layers.append(nn.ReLU())
+			
 			in_channels = channels
 
 		return nn.Sequential(*layers)

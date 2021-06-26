@@ -18,7 +18,7 @@ from pytorch_metric_learning.utils import logging_presets
 from pytorch_metric_learning import losses, miners
 
 parser = argparse.ArgumentParser(description='Neuralfp Training')
-parser.add_argument('--epochs', default=1000, type=int, metavar='N',
+parser.add_argument('--epochs', default=400, type=int, metavar='N',
                     help='number of total epochs to run')
 parser.add_argument('--resume', default='', type=str, metavar='PATH',
                     help='path to latest checkpoint (default: none)')
@@ -116,7 +116,7 @@ def main():
     
     model = Neuralfp(encoder=encoder.Encoder()).to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
-    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=num_epochs, eta_min = 1e-7)
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max = 100, eta_min = 1e-7)
     loss_func = losses.NTXentLoss(temperature = 0.1)
     criterion = NT_Xent(batch_size, temperature = 0.1)
 
