@@ -75,9 +75,9 @@ def train(train_loader, model, loss_fn, optimizer, criterion):
         loss_epoch += loss.item()
     return loss_epoch
 
-def save_ckp(state):
+def save_ckp(state,epoch):
     if not os.path.exists(model_folder): os.makedirs(model_folder)
-    torch.save(state, "{}/model_org.pth".format(model_folder))
+    torch.save(state, "{}/model_org_epoch_{].pth".format(model_folder,epoch))
 
 def load_ckp(checkpoint_fpath, model, optimizer, scheduler):
     checkpoint = torch.load(checkpoint_fpath)
@@ -143,7 +143,7 @@ def main():
         print("#######Epoch {}#######".format(epoch))
         loss_epoch = train(train_loader, model, loss_func, optimizer, criterion)
         loss_log.append(loss_epoch)
-        if loss_epoch < best_loss:
+        if loss_epoch < best_loss and epoch%10==0:
             best_loss = loss_epoch
             
             checkpoint = {
@@ -153,7 +153,7 @@ def main():
                 'optimizer': optimizer.state_dict(),
                 'scheduler': scheduler.state_dict()
             }
-            save_ckp(checkpoint)
+            save_ckp(checkpoint,epoch)
         scheduler.step()
     
   
