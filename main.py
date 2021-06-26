@@ -70,13 +70,14 @@ def train(train_loader, model, loss_fn, optimizer, criterion):
         if idx % 10 == 0:
             print(f"Step [{idx}/{len(train_loader)}]\t Loss: {loss.item()}")
         
+        
 
         loss_epoch += loss.item()
     return loss_epoch
 
 def save_ckp(state):
     if not os.path.exists(model_folder): os.makedirs(model_folder)
-    torch.save(state, "{}/model_aug2.pth".format(model_folder))
+    torch.save(state, "{}/model_org.pth".format(model_folder))
 
 def load_ckp(checkpoint_fpath, model, optimizer, scheduler):
     checkpoint = torch.load(checkpoint_fpath)
