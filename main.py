@@ -54,10 +54,6 @@ def train(train_loader, model, loss_fn, optimizer, criterion):
         # positive pair, with encoding
         h_i, h_j, z_i, z_j = model(x_i, x_j)
         
-        # self-supervised labels for loss function
-        # embeddings = torch.cat([z_i,z_j], dim=0)
-        # label = torch.arange(embeddings.size(0)/2)
-        # labels = torch.cat([label,label], dim=0).to(device)
         loss = criterion(z_i, z_j)
 
         
