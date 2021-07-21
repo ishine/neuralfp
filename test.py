@@ -29,7 +29,7 @@ parser.add_argument('--eval', default=False, type=bool,
 # Directories
 root = os.path.dirname(__file__)
 
-data_dir = os.path.join(root,"data/test_data/fma_large")
+data_dir = os.path.join(root,"data")
 ir_dir = os.path.join(root,'data/ir_filters')
 noise_dir = os.path.join(root,'data/noise')
 fp_dir = os.path.join(root,'fingerprints')
