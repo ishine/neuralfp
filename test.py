@@ -41,15 +41,15 @@ def load_index(dirpath):
     dataset = {}
     idx = 0
     json_path = os.path.join(data_dir, dirpath.split('/')[-1] + ".json")
-    if not os.path.isfile(json_path):
-        for filename in os.listdir(dirpath):
-          if filename.endswith(".wav") or filename.endswith(".mp3"): 
-            dataset[idx] = filename
-            idx += 1
-        print("Dataset length:",dataset)
-        with open(json_path, 'w') as fp:
-            json.dump(dataset, fp)
-    
+
+    for filename in os.listdir(dirpath):
+      if filename.endswith(".wav") or filename.endswith(".mp3"): 
+        dataset[idx] = filename
+        idx += 1
+    print("Dataset length:",dataset)
+    with open(json_path, 'w') as fp:
+        json.dump(dataset, fp)
+
     return json_path
         
 def create_fp_db(dataloader, model):
