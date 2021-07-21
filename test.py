@@ -54,7 +54,8 @@ def load_index(dirpath):
 def create_fp_db(dataloader, model):
     fp_db = {}
     print("=> Creating fingerprints...")
-    for idx, (x,fname) in enumerate(dataloader): 
+    for idx, (x,fname) in enumerate(dataloader):
+        print(fname)
         fp = []
         splits = x[0]
         for s in splits:
@@ -75,7 +76,7 @@ def evaluate_hitrate(ref_db, query_db):
     audio_idx = 0
     ref_list = []
     
-    for i in range(1000):
+    for i in range(len(ref_db)):
         audio_idx += list(ref_db.values())[i].size(0)
         ref_list.append(audio_idx)
         
