@@ -134,7 +134,8 @@ def main():
         os.mkdir(fp_dir)
         
     if args.fp_path == '':
-        checkpoint = os.path.join(root, args.model_path)
+        checkpoint_dir = os.path.join(root, args.model_path)
+        checkpoint = torch.load(checkpoint_dir)
         model = Neuralfp(encoder=encoder.Encoder()).to(device)
         model.load_state_dict(checkpoint['state_dict'])
         
