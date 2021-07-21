@@ -53,6 +53,7 @@ def load_index(dirpath):
         
 def create_fp_db(dataloader, model):
     fp_db = {}
+    print("=> Creating fingerprints...")
     for idx, (x,fname) in enumerate(dataloader): 
         fp = []
         splits = x[0]
@@ -138,13 +139,14 @@ def main():
         checkpoint = torch.load(checkpoint_dir)
         model = Neuralfp(encoder=encoder.Encoder()).to(device)
         model.load_state_dict(checkpoint['state_dict'])
-        
+        print("=> Loading pre-trained model")
         json_dir = load_index(args.test_dir)
         test_dataset = NeuralfpDataset(path=args.test_dir, json_dir=json_dir, validate=True)
         test_loader = torch.utils.data.DataLoader(
             test_dataset, batch_size=1, shuffle=False,
             num_workers=0, pin_memory=True, drop_last=False)
         ref_db = create_fp_db(test_loader, model)
+        print(list(ref_db.keys())[0:10])
         torch.save(ref_db, os.path.join(fp_dir, args.test_dir.split('/')[-1] + "_aug1.pt"))
 
         
