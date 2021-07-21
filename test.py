@@ -29,8 +29,7 @@ parser.add_argument('--eval', default=False, type=bool,
 # Directories
 root = os.path.dirname(__file__)
 
-data_dir = os.path.join(root,"data")
-# json_dir = os.path.join(root,"data/fma.json")
+data_dir = os.path.join(root,"data/test_data/fma_large")
 ir_dir = os.path.join(root,'data/ir_filters')
 noise_dir = os.path.join(root,'data/noise')
 fp_dir = os.path.join(root,'fingerprints')
@@ -41,12 +40,16 @@ device = torch.device("cuda")
 def load_index(dirpath):
     dataset = {}
     idx = 0
-    for filename in os.listdir(dirpath):
-      if filename.endswith(".wav") or filename.endswith(".mp3"): 
-        dataset[idx] = filename
-        idx += 1
-    with open(os.path.join(data_dir, dirpath.split('/')[-1] + ".json"), 'w') as fp:
-        json.dump(dataset, fp)
+    json_path = os.path.join(data_dir, dirpath.split('/')[-1] + ".json")
+    if not os.path.isfile(json_path):
+        for filename in os.listdir(dirpath):
+          if filename.endswith(".wav") or filename.endswith(".mp3"): 
+            dataset[idx] = filename
+            idx += 1
+        with open(json_path, 'w') as fp:
+            json.dump(dataset, fp)
+    
+    return json_path
         
 def create_fp_db(dataloader, model):
     fp_db = {}
@@ -149,7 +152,7 @@ def main():
     else:
         print("=>no fingeprint database'{}'".format(args.fp_path))
 
-    if args.flag and os.path.isdir(args.query_dir):
+    if args.eval and os.path.isdir(args.query_dir):
         model = Neuralfp(encoder=encoder.Encoder()).to(device)
         model.load_state_dict(checkpoint['state_dict'])
         json_dir = load_index(args.query_dir)
