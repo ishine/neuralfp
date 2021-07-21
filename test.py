@@ -46,6 +46,7 @@ def load_index(dirpath):
           if filename.endswith(".wav") or filename.endswith(".mp3"): 
             dataset[idx] = filename
             idx += 1
+        print("Dataset length:",dataset)
         with open(json_path, 'w') as fp:
             json.dump(dataset, fp)
     
