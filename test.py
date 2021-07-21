@@ -131,7 +131,8 @@ def evaluate_hitrate(ref_db, query_db):
 def main():
     args = parser.parse_args()
     if not os.path.exists(fp_dir):
-        mkdir(fp_dir)
+        os.mkdir(fp_dir)
+        
     if args.fp_path == '':
         checkpoint = os.path.join(root, args.model_path)
         model = Neuralfp(encoder=encoder.Encoder()).to(device)
