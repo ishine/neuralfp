@@ -161,7 +161,7 @@ def main():
             test_dataset, batch_size=1, shuffle=False,
             num_workers=0, pin_memory=True, drop_last=False)
         query_db = create_fp_db(query_loader, model)
-        torch.save(query_db, os.path.join(fp_dir, args.query_dir.split('/')[-1] + ".pt"))
+        torch.save(query_db, os.path.join(fp_dir, args.query_dir.split('/')[-1] + "aug1.pt"))
         
         evaluate_hitrate(ref_db, query_db)
         
