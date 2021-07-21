@@ -147,7 +147,7 @@ def main():
         test_loader = torch.utils.data.DataLoader(
             test_dataset, batch_size=1, shuffle=False,
             num_workers=0, pin_memory=True, drop_last=False)
-        print(next(iter(test_loader))[0].shape)
+        # print(next(iter(test_loader))[0].shape)
         ref_db = create_fp_db(test_loader, model)
         print(list(ref_db.keys())[0:10])
         torch.save(ref_db, os.path.join(fp_dir, args.test_dir.split('/')[-1] + "_aug1.pt"))
@@ -166,7 +166,7 @@ def main():
         json_dir = load_index(args.query_dir)
         query_dataset = NeuralfpDataset(path=args.test_dir, json_dir=json_dir, validate=True)
         query_loader = torch.utils.data.DataLoader(
-            test_dataset, batch_size=1, shuffle=False,
+            query_dataset, batch_size=1, shuffle=False,
             num_workers=0, pin_memory=True, drop_last=False)
         query_db = create_fp_db(query_loader, model)
         torch.save(query_db, os.path.join(fp_dir, args.query_dir.split('/')[-1] + "aug1.pt"))
