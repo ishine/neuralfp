@@ -12,7 +12,7 @@ from audiomentations import Compose,Shift,PitchShift,TimeStretch,AddImpulseRespo
 
 root = os.path.dirname(__file__)
 
-validation_dir = os.path.join(root,'data/gtzan_2sec_2K')
+validation_dir = os.path.join(root,'data/fma_2sec_2K')
 ir_dir = os.path.join(root,'data/ir_filters')
 noise_dir = os.path.join(root,'data/noise')
 data_dir = os.path.join(root,'data/test_data/fma_large')
