@@ -129,7 +129,8 @@ def evaluate_hitrate(ref_db, query_db):
         if query_name == db_name:
               hit+=1
               
-    print("Hit rate = {hit}/{len(query_db)}")
+    print(f"Hit rate = {hit}/{len(query_db)}")
+    print(hit*1.0/len(query_db))
 
 
 def main():
