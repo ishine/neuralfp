@@ -56,6 +56,6 @@ for i in range(iters):
   r2 = np.random.randint(0,len(audio)-offset_frame)
   audioData = audio[r2:r2+offset_frame]
   augmented_samples = augment(samples=audioData, sample_rate=SAMPLE_RATE)
-  fname = ref[str(r1)].split(".mp3")[0] + "-" + str(uuid.uuid4()) + ".mp3"
-  sf.write(os.path.join(validation_dir,fname), augmented_samples, SAMPLE_RATE)
+  fname = ref[str(r1)].split(".mp3")[0] + "-" + str(uuid.uuid4()) + ".wav"
+  sf.write(os.path.join(validation_dir,fname), augmented_samples, SAMPLE_RATE, format='WAV')
 
