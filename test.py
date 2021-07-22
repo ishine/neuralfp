@@ -104,29 +104,32 @@ def evaluate_hitrate(ref_db, query_db):
     
         print(I)
         min_id = np.argmin(D.flatten())
-        id = I.flatten()[min_id]
+        ix = I.flatten()[min_id]
         
-        idx = np.where(np.array(ref_list)>id)[0][0]
+        print("id: ",ix)
+        print(np.where(np.array(ref_list)>ix))
         
-        print("name of file from database",list(ref_db.keys())[idx])
-        print("name of query file:\n",list(query_db.keys())[r])
+        # idx = np.where(np.array(ref_list)>id)[0][0]
         
-        print("Computing hit-rate...")
+        # print("name of file from database",list(ref_db.keys())[idx])
+        # print("name of query file:\n",list(query_db.keys())[r])
         
-        hit = 0
-        for i in range(len(query_db)):
-            xq = list(query_db.values())[r].cpu().numpy()
-            D, I = index.search(xq, k)
-            min_id = np.argmin(D.flatten())
-            id = I.flatten()[min_id]
-            idx = np.where(np.array(ref_list)>id)[0][0]
+        # print("Computing hit-rate...")
+        
+        # hit = 0
+        # for i in range(len(query_db)):
+        #     xq = list(query_db.values())[r].cpu().numpy()
+        #     D, I = index.search(xq, k)
+        #     min_id = np.argmin(D.flatten())
+        #     id = I.flatten()[min_id]
+        #     idx = np.where(np.array(ref_list)>id)[0][0]
           
-            query_name = list(query_db.keys())[r].split('.mp3')[0].split('-')[0]
-            db_name = list(ref_db.keys())[idx].split('.mp3')[0]
-            if query_name == db_name:
-                  hit+=1
+        #     query_name = list(query_db.keys())[r].split('.mp3')[0].split('-')[0]
+        #     db_name = list(ref_db.keys())[idx].split('.mp3')[0]
+        #     if query_name == db_name:
+        #           hit+=1
                   
-        print("Hit rate = {hit}/{len(query_db)}")
+        # print("Hit rate = {hit}/{len(query_db)}")
 
 
 def main():
