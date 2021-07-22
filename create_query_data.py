@@ -61,7 +61,11 @@ while i < iters:
     if i % 50 == 0:
         print(f"Step [{i}/{iters}]")
     offset_frame = int(SAMPLE_RATE*offset)
-    r2 = np.random.randint(0,len(audio)-offset_frame)
+    try:    
+        r2 = np.random.randint(0,len(audio)-offset_frame)
+    except ValueError:
+        print("audio length error = ",len(audio))
+    
     audioData = audio[r2:r2+offset_frame]
     augmented_samples = augment(samples=audioData, sample_rate=SAMPLE_RATE)
     fname = ref[str(r1)].split(".mp3")[0] + "-" + str(uuid.uuid4()) + ".wav"
