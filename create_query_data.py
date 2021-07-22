@@ -2,11 +2,21 @@ import random
 import numpy as np
 import librosa
 import soundfile as sf
+import sys
 import os
 import json
 import uuid
 from audiomentations import Compose,Shift,PitchShift,TimeStretch,AddImpulseResponse,FrequencyMask,TimeMask,ClippingDistortion,AddBackgroundNoise,Gain
 
+
+class HiddenPrints:
+    def __enter__(self):
+        self._original_stdout = sys.stdout
+        sys.stdout = open(os.devnull, 'w')
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        sys.stdout.close()
+        sys.stdout = self._original_stdout
 
 root = os.path.dirname(__file__)
 
@@ -49,7 +59,8 @@ augment = Compose([
 for i in range(iters):
   r1 = random.randrange(len(os.listdir(data_dir)))
   fpath = os.path.join(data_dir, ref[str(r1)])
-  audio, sr = librosa.load(fpath, sr=8000, mono=True)
+  with(HiddenPrints()):
+      audio, sr = librosa.load(fpath, sr=8000, mono=True)
   if i % 50 == 0:
     print(f"Step [{i}/{iters}]")
   offset_frame = int(SAMPLE_RATE*offset)
