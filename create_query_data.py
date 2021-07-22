@@ -56,7 +56,7 @@ while i < iters:
             warnings.simplefilter("ignore")
             audio, sr = librosa.load(fpath, sr=8000, mono=True)
     except Exception:
-        iters+=1
+        continue
         
     if i % 50 == 0:
         print(f"Step [{i}/{iters}]")
