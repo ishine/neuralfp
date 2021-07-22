@@ -12,7 +12,7 @@ from audiomentations import Compose,Shift,PitchShift,TimeStretch,AddImpulseRespo
 
 root = os.path.dirname(__file__)
 
-validation_dir = os.path.join(root,'data/fma_2sec_2K')
+validation_dir = os.path.join(root,'data/fma_10sec_2K')
 ir_dir = os.path.join(root,'data/ir_filters')
 noise_dir = os.path.join(root,'data/noise')
 data_dir = os.path.join(root,'data/test_data/fma_large')
@@ -20,7 +20,7 @@ json_path = os.path.join(root,'data/fma_large.json')
 
 
 SAMPLE_RATE = 8000
-offset = 2
+offset = 10
 
 # ref = {}
 # idx = 0
