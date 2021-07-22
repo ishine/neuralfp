@@ -161,7 +161,7 @@ def main():
         model = Neuralfp(encoder=encoder.Encoder()).to(device)
         model.load_state_dict(checkpoint['state_dict'])
         json_dir = load_index(args.query_dir)
-        query_dataset = NeuralfpDataset(path=args.test_dir, json_dir=json_dir, validate=True)
+        query_dataset = NeuralfpDataset(path=args.query_dir, json_dir=json_dir, validate=True)
         query_loader = torch.utils.data.DataLoader(
             query_dataset, batch_size=1, shuffle=False,
             num_workers=0, pin_memory=True, drop_last=False)
