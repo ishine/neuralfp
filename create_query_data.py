@@ -48,7 +48,7 @@ augment = Compose([
 
 for i in range(iters):
   r1 = random.randrange(len(os.listdir(data_dir)))
-  fpath = os.path.join(data_dir, ref[r1])
+  fpath = os.path.join(data_dir, ref[str(r1)])
   audio, sr = librosa.load(fpath, sr=8000, mono=True)
   if i % 50 == 0:
     print(f"Step [{i}/{iters}]")
@@ -56,6 +56,6 @@ for i in range(iters):
   r2 = np.random.randint(0,len(audio)-offset_frame)
   audioData = audio[r2:r2+offset_frame]
   augmented_samples = augment(samples=audioData, sample_rate=SAMPLE_RATE)
-  fname = ref[r1].split(".mp3")[0] + "-" + str(uuid.uuid4()) + ".mp3"
+  fname = ref[str(r1)].split(".mp3")[0] + "-" + str(uuid.uuid4()) + ".mp3"
   sf.write(os.path.join(validation_dir,fname), augmented_samples, SAMPLE_RATE)
 
