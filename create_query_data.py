@@ -6,17 +6,9 @@ import sys
 import os
 import json
 import uuid
+import warnings
 from audiomentations import Compose,Shift,PitchShift,TimeStretch,AddImpulseResponse,FrequencyMask,TimeMask,ClippingDistortion,AddBackgroundNoise,Gain
 
-
-class HiddenPrints:
-    def __enter__(self):
-        self._original_stdout = sys.stdout
-        sys.stdout = open(os.devnull, 'w')
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        sys.stdout.close()
-        sys.stdout = self._original_stdout
 
 root = os.path.dirname(__file__)
 
@@ -55,18 +47,23 @@ augment = Compose([
     # Mp3Compression()
     ])
 
-
-for i in range(iters):
-  r1 = random.randrange(len(os.listdir(data_dir)))
-  fpath = os.path.join(data_dir, ref[str(r1)])
-  with(HiddenPrints()):
-      audio, sr = librosa.load(fpath, sr=8000, mono=True)
-  if i % 50 == 0:
-    print(f"Step [{i}/{iters}]")
-  offset_frame = int(SAMPLE_RATE*offset)
-  r2 = np.random.randint(0,len(audio)-offset_frame)
-  audioData = audio[r2:r2+offset_frame]
-  augmented_samples = augment(samples=audioData, sample_rate=SAMPLE_RATE)
-  fname = ref[str(r1)].split(".mp3")[0] + "-" + str(uuid.uuid4()) + ".wav"
-  sf.write(os.path.join(validation_dir,fname), augmented_samples, SAMPLE_RATE, format='WAV')
+i = 0
+while i < iters:
+    r1 = random.randrange(len(os.listdir(data_dir)))
+    fpath = os.path.join(data_dir, ref[str(r1)])
+    try:
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            audio, sr = librosa.load(fpath, sr=8000, mono=True)
+    except Exception:
+        iters+=1
+        
+    if i % 50 == 0:
+        print(f"Step [{i}/{iters}]")
+    offset_frame = int(SAMPLE_RATE*offset)
+    r2 = np.random.randint(0,len(audio)-offset_frame)
+    audioData = audio[r2:r2+offset_frame]
+    augmented_samples = augment(samples=audioData, sample_rate=SAMPLE_RATE)
+    fname = ref[str(r1)].split(".mp3")[0] + "-" + str(uuid.uuid4()) + ".wav"
+    sf.write(os.path.join(validation_dir,fname), augmented_samples, SAMPLE_RATE, format='WAV')
 
