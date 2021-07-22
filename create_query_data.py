@@ -66,4 +66,4 @@ while i < iters:
     augmented_samples = augment(samples=audioData, sample_rate=SAMPLE_RATE)
     fname = ref[str(r1)].split(".mp3")[0] + "-" + str(uuid.uuid4()) + ".wav"
     sf.write(os.path.join(validation_dir,fname), augmented_samples, SAMPLE_RATE, format='WAV')
-
+    i+=1
