@@ -79,57 +79,57 @@ def evaluate_hitrate(ref_db, query_db):
         audio_idx += list(ref_db.values())[i].size(0)
         ref_list.append(audio_idx)
         
-        print("=> Sanity check performed on random query")
-        
-        d = 128
-        r = random.randrange(len(query_db))
-
-        xb = torch.cat(list(ref_db.values())).cpu().numpy()
-        xq = list(query_db.values())[r].cpu().numpy()
-          
-        nlist = 100
-        m = 8
-        k = 4
-        quantizer = faiss.IndexFlatL2(d) 
-        index = faiss.IndexIVFPQ(quantizer, d, nlist, m, 8)
-        
-        index.train(xb)
-        index.add(xb)
-        
-        index.nprobe = 20 
-        
-        D, I = index.search(xq, k)
-        print("k-NN distance and index vectors:")
-        print(D)
+    print("=> Sanity check performed on random query")
     
-        print(I)
+    d = 128
+    r = random.randrange(len(query_db))
+
+    xb = torch.cat(list(ref_db.values())).cpu().numpy()
+    xq = list(query_db.values())[r].cpu().numpy()
+      
+    nlist = 100
+    m = 8
+    k = 4
+    quantizer = faiss.IndexFlatL2(d) 
+    index = faiss.IndexIVFPQ(quantizer, d, nlist, m, 8)
+    
+    index.train(xb)
+    index.add(xb)
+    
+    index.nprobe = 20 
+    
+    D, I = index.search(xq, k)
+    print("k-NN distance and index vectors:")
+    print(D)
+
+    print(I)
+    min_id = np.argmin(D.flatten())
+    ix = I.flatten()[min_id]
+    
+    # print("id: ",ix)
+    # print(np.where(np.array(ref_list)>ix))
+    
+    idx = np.where(np.array(ref_list)>ix)[0][0]
+    
+    print("name of file from database",list(ref_db.keys())[idx])
+    print("name of query file:\n",list(query_db.keys())[r])
+    
+    print("Computing hit-rate...")
+    
+    hit = 0
+    for i in range(len(query_db)):
+        xq = list(query_db.values())[r].cpu().numpy()
+        D, I = index.search(xq, k)
         min_id = np.argmin(D.flatten())
-        ix = I.flatten()[min_id]
-        
-        print("id: ",ix)
-        print(np.where(np.array(ref_list)>ix))
-        
-        # idx = np.where(np.array(ref_list)>id)[0][0]
-        
-        # print("name of file from database",list(ref_db.keys())[idx])
-        # print("name of query file:\n",list(query_db.keys())[r])
-        
-        # print("Computing hit-rate...")
-        
-        # hit = 0
-        # for i in range(len(query_db)):
-        #     xq = list(query_db.values())[r].cpu().numpy()
-        #     D, I = index.search(xq, k)
-        #     min_id = np.argmin(D.flatten())
-        #     id = I.flatten()[min_id]
-        #     idx = np.where(np.array(ref_list)>id)[0][0]
-          
-        #     query_name = list(query_db.keys())[r].split('.mp3')[0].split('-')[0]
-        #     db_name = list(ref_db.keys())[idx].split('.mp3')[0]
-        #     if query_name == db_name:
-        #           hit+=1
-                  
-        # print("Hit rate = {hit}/{len(query_db)}")
+        id = I.flatten()[min_id]
+        idx = np.where(np.array(ref_list)>id)[0][0]
+      
+        query_name = list(query_db.keys())[r].split('.mp3')[0].split('-')[0]
+        db_name = list(ref_db.keys())[idx].split('.mp3')[0]
+        if query_name == db_name:
+              hit+=1
+              
+    print("Hit rate = {hit}/{len(query_db)}")
 
 
 def main():
