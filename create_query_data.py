@@ -22,7 +22,8 @@ json_path = os.path.join(root,'data/fma_large.json')
 for fname in os.listdir(validation_dir):
     path = os.path.join(validation_dir, fname)
     audio, sr = librosa.load(path, sr=8000, mono=True)
-    print(fname," : ",len(audio))
+    if len(audio) < 80000:
+        print(fname," : ",len(audio))
 # SAMPLE_RATE = 8000
 # offset = 10
 
