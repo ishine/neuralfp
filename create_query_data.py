@@ -64,7 +64,8 @@ while i < iters:
     try:    
         r2 = np.random.randint(0,len(audio)-offset_frame)
     except ValueError:
-        print("audio length error = ",len(audio))
+        print("audio length error = ",len(audio)/8000.0)
+        continue
     
     audioData = audio[r2:r2+offset_frame]
     augmented_samples = augment(samples=audioData, sample_rate=SAMPLE_RATE)
