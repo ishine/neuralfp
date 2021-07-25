@@ -25,7 +25,7 @@ parser.add_argument('--seed', default=None, type=int,
 root = os.path.dirname(__file__)
 model_folder = os.path.join(root,"model")
 data_dir = os.path.join(root,"data/fma_10k")
-json_dir = os.path.join(root,"data/fma.json")
+json_dir = os.path.join(root,"data/fma_10k.json")
 ir_dir = os.path.join(root,'data/ir_chang')
 noise_dir = os.path.join(root,'data/noise')
 
@@ -69,7 +69,7 @@ def train(train_loader, model, optimizer, criterion):
 
 def save_ckp(state,epoch):
     if not os.path.exists(model_folder): os.makedirs(model_folder)
-    torch.save(state, "{}/model_aug2_epoch_{}.pth".format(model_folder,epoch))
+    torch.save(state, "{}/model_au_epoch_{}.pth".format(model_folder,epoch))
 
 def load_ckp(checkpoint_fpath, model, optimizer, scheduler):
     checkpoint = torch.load(checkpoint_fpath)
