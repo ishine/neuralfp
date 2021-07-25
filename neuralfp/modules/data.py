@@ -4,6 +4,7 @@ from torch.utils.data import Dataset
 import torch.nn.functional as F
 import torchaudio
 import numpy as np
+import warnings
 from torchaudio.transforms import MelSpectrogram
 
 offset = 1.0
@@ -54,7 +55,10 @@ class NeuralfpDataset(Dataset):
             audioData = audioData[r:r+offset_mod]
             org = audioData[ri:ri+offset_frame]
             rep = audioData[rj:rj+offset_frame]
-            audioData_i, audioData_j = self.transform(org.numpy(), rep.numpy())
+            
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore")
+                audioData_i, audioData_j = self.transform(org.numpy(), rep.numpy())
             # print(audioData.shape,audioData_i.shape,audioData_j.shape)
             audioData_i = torch.from_numpy(audioData_i)
             audioData_j = torch.from_numpy(audioData_j)
