@@ -30,7 +30,7 @@ root = os.path.dirname(__file__)
 model_folder = os.path.join(root,"model")
 data_dir = os.path.join(root,"data/fma_10k")
 json_dir = os.path.join(root,"data/fma.json")
-ir_dir = os.path.join(root,'data/ir_filters')
+ir_dir = os.path.join(root,'data/ir_chang')
 noise_dir = os.path.join(root,'data/noise')
 
 device = torch.device("cuda")
@@ -73,7 +73,7 @@ def train(train_loader, model, loss_fn, optimizer, criterion):
 
 def save_ckp(state,epoch):
     if not os.path.exists(model_folder): os.makedirs(model_folder)
-    torch.save(state, "{}/model_org_epoch_{}.pth".format(model_folder,epoch))
+    torch.save(state, "{}/model_2_epoch_{}.pth".format(model_folder,epoch))
 
 def load_ckp(checkpoint_fpath, model, optimizer, scheduler):
     checkpoint = torch.load(checkpoint_fpath)

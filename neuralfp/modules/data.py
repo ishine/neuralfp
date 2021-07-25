@@ -6,7 +6,7 @@ import torchaudio
 import numpy as np
 from torchaudio.transforms import MelSpectrogram
 
-offset = 1.25
+offset = 1.0
 SAMPLE_RATE = 8000
 target_len = 60
 
@@ -47,9 +47,14 @@ class NeuralfpDataset(Dataset):
             return self[idx + 1]
         
         if not self.validate:
-            r = np.random.randint(0,len(audioData)-offset_frame)
-            audioData = audioData[r:r+offset_frame]
-            audioData_i, audioData_j = self.transform(audioData.numpy())
+            offset_mod = int(SAMPLE_RATE*(offset+0.2))
+            r = np.random.randint(0,len(audioData)-offset_mod)
+            ri = np.random.randint(0,offset_mod - offset_frame)
+            rj = np.random.randint(0,offset_mod - offset_frame)
+            audioData = audioData[r:r+offset_mod]
+            org = audioData[ri:ri+offset_frame]
+            rep = audioData[rj:rj+offset_frame]
+            audioData_i, audioData_j = self.transform(org.numpy(), rep.numpy())
             # print(audioData.shape,audioData_i.shape,audioData_j.shape)
             audioData_i = torch.from_numpy(audioData_i)
             audioData_j = torch.from_numpy(audioData_j)
@@ -64,7 +69,7 @@ class NeuralfpDataset(Dataset):
             return torch.unsqueeze(specData_i, 0), torch.unsqueeze(specData_j, 0)
         
         else:
-            chunks = torch.split(audioData, offset_frame)
+            chunks = torch.split(audioData, int(SAMPLE_RATE*offset))
             spec = []
             if chunks[-1].size(0) < 1024:
                 chunks = chunks[:-1]
