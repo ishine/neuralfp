@@ -2,7 +2,6 @@ import os
 import random
 import numpy as np
 import torch
-import torchvision
 import argparse
 
 # Neuralfp
@@ -13,9 +12,6 @@ from neuralfp.modules.nt_xent import NT_Xent
 import neuralfp.modules.encoder as encoder
 
 
-# pytorch metric learning
-from pytorch_metric_learning.utils import logging_presets
-from pytorch_metric_learning import losses, miners
 
 parser = argparse.ArgumentParser(description='Neuralfp Training')
 parser.add_argument('--epochs', default=500, type=int, metavar='N',
@@ -36,7 +32,7 @@ noise_dir = os.path.join(root,'data/noise')
 device = torch.device("cuda")
 
 
-def train(train_loader, model, loss_fn, optimizer, criterion):
+def train(train_loader, model, optimizer, criterion):
     loss_epoch = 0
     for idx, (x_i, x_j) in enumerate(train_loader):
         
@@ -73,7 +69,7 @@ def train(train_loader, model, loss_fn, optimizer, criterion):
 
 def save_ckp(state,epoch):
     if not os.path.exists(model_folder): os.makedirs(model_folder)
-    torch.save(state, "{}/model_2_epoch_{}.pth".format(model_folder,epoch))
+    torch.save(state, "{}/model_ver2_epoch_{}.pth".format(model_folder,epoch))
 
 def load_ckp(checkpoint_fpath, model, optimizer, scheduler):
     checkpoint = torch.load(checkpoint_fpath)
@@ -113,7 +109,6 @@ def main():
     model = Neuralfp(encoder=encoder.Encoder()).to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max = 500, eta_min = 1e-7)
-    loss_func = losses.NTXentLoss(temperature = 0.1)
     criterion = NT_Xent(batch_size, temperature = 0.1)
 
        
@@ -131,13 +126,13 @@ def main():
     
 
     
-    best_loss = train(train_loader, model, loss_func, optimizer, criterion)
+    best_loss = train(train_loader, model, optimizer, criterion)
     
     # training
     model.train()
     for epoch in range(start_epoch+1, num_epochs+1):
         print("#######Epoch {}#######".format(epoch))
-        loss_epoch = train(train_loader, model, loss_func, optimizer, criterion)
+        loss_epoch = train(train_loader, model, optimizer, criterion)
         loss_log.append(loss_epoch)
         if loss_epoch < best_loss and epoch%10==0:
             best_loss = loss_epoch
