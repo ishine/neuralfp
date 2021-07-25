@@ -35,7 +35,7 @@ class NeuralfpDataset(Dataset):
             return self[idx+1]
 
         audioData = audio.mean(dim=0)
-        print("audio length: ",len(audioData))
+        # print("audio length: ",len(audioData))
         resampler = torchaudio.transforms.Resample(sr, SAMPLE_RATE)
         audioData = resampler(audioData)    # Downsampling
         spec_func = MelSpectrogram(sample_rate=SAMPLE_RATE, win_length=1024, hop_length=256, n_fft=2048)    
