@@ -7,7 +7,7 @@ import numpy as np
 import warnings
 from torchaudio.transforms import MelSpectrogram
 
-offset = 1.0
+offset = 3.0
 SAMPLE_RATE = 8000
 target_len = 60
 

@@ -22,7 +22,7 @@ class TransformNeuralfp:
             # Shift(min_fraction=-0.1, max_fraction=0.1, rollover=False),
             PitchShift(min_semitones=-2, max_semitones=2, p=0.5),
             TimeStretch(min_rate=0.8, max_rate=1.2, p=0.5),
-            # AddImpulseResponse(ir_path=ir_dir, p=0.8),
+            AddImpulseResponse(ir_path=ir_dir, p=0.8),
             FrequencyMask(min_frequency_band=0.1, max_frequency_band=0.5,p=0.8),
             TimeMask(min_band_part=0.1, max_band_part=0.5),
             # ClippingDistortion(min_percentile_threshold=0, max_percentile_threshold=10),
