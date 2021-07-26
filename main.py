@@ -3,6 +3,7 @@ import random
 import numpy as np
 import torch
 import argparse
+import json
 
 # Neuralfp
 from neuralfp.modules.data import NeuralfpDataset
@@ -24,8 +25,8 @@ parser.add_argument('--seed', default=None, type=int,
 # Directories
 root = os.path.dirname(__file__)
 model_folder = os.path.join(root,"model")
-data_dir = os.path.join(root,"data/fma_10k")
-json_dir = os.path.join(root,"data/fma_10k.json")
+data_dir = os.path.join(root,"data/fma_unsampled/fma_small")
+# json_dir = os.path.join(root,"data/fma_10k.json")
 ir_dir = os.path.join(root,'data/ir_chang')
 noise_dir = os.path.join(root,'data/noise')
 
@@ -82,9 +83,24 @@ def seed_worker(worker_id):
     worker_seed = torch.initial_seed() % 2**32
     np.random.seed(worker_seed)
     random.seed(worker_seed)
+    
+def load_index(dirpath):
+    dataset = {}
+    idx = 0
+    json_path = os.path.join(data_dir, dirpath.split('/')[-1] + ".json")
+
+    for filename in os.listdir(dirpath):
+      if filename.endswith(".wav") or filename.endswith(".mp3"): 
+        dataset[idx] = filename
+        idx += 1
+    with open(json_path, 'w') as fp:
+        json.dump(dataset, fp)
+
+    return json_path
 
 def main():
     args = parser.parse_args()
+    json_dir = load_index(data_dir)
     
     # Hyperparameters
     batch_size = 320
