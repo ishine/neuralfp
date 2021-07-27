@@ -55,9 +55,9 @@ class NeuralfpDataset(Dataset):
             org = audioData[ri:ri+offset_frame]
             rep = audioData[rj:rj+offset_frame]
             
-            # with warnings.catch_warnings():
-            #     warnings.simplefilter("ignore")
-            audioData_i, audioData_j = self.transform(org.numpy(), rep.numpy(), sr)
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore")
+                audioData_i, audioData_j = self.transform(org.numpy(), rep.numpy(), sr)
             # print(audioData.shape,audioData_i.shape,audioData_j.shape)
             audioData_i = torch.from_numpy(audioData_i)
             audioData_j = torch.from_numpy(audioData_j)
