@@ -27,7 +27,7 @@ class Encoder(nn.Module):
 		in_channels = self.in_channels
 		kernel_size = self.kernel_size
 		stride = self.stride
-		shape = [1,128,60]
+		shape = [1,128,40]
 		for channels in architecture:
     
 			layers.append(nn.Conv2d(in_channels=in_channels, out_channels=channels, kernel_size=(1,kernel_size), stride=(1,stride), padding=(0,1)))

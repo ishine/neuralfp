@@ -65,7 +65,7 @@ class NeuralfpDataset(Dataset):
             audioData_i = resampler(audioData_i)
             specData_i = spec_func(audioData_i)
             specData_i = torchaudio.transforms.AmplitudeToDB()(specData_i)
-            print(specData_i.size(-1), torch.nonzero(specData_i).shape)
+            # print(specData_i.size(-1))
             specData_i = F.pad(specData_i, (target_len - specData_i.size(-1), 0))
         
     
