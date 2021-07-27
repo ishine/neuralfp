@@ -50,7 +50,7 @@ def train(train_loader, model, optimizer, criterion):
 
         # positive pair, with encoding
         h_i, h_j, z_i, z_j = model(x_i, x_j)
-        print(torch.nonzero(z_i))
+        print(torch.nonzero(z_i).shape)
         loss = criterion(z_i, z_j)
 
         
