@@ -9,7 +9,7 @@ from torchaudio.transforms import MelSpectrogram
 
 offset = 1.0
 SAMPLE_RATE = 8000
-target_len = 40
+target_len = 60
 
 class NeuralfpDataset(Dataset):
     def __init__(self, path, json_dir, transform=None, validate=False):
@@ -38,16 +38,17 @@ class NeuralfpDataset(Dataset):
         audioData = audio.mean(dim=0)
         # print("audio length: ",len(audioData))
         resampler = torchaudio.transforms.Resample(sr, SAMPLE_RATE)
+        audioData = resampler(audioData)    # Downsampling
         spec_func = MelSpectrogram(sample_rate=SAMPLE_RATE, win_length=1024, hop_length=256, n_fft=2048)    
 
-        offset_frame = int(sr*offset)
+        offset_frame = int(SAMPLE_RATE*offset)
         
         if len(audioData) <= offset_frame:
             self.ignore_idx.append(idx)
             return self[idx + 1]
         
         if not self.validate:
-            offset_mod = int(sr*(offset+0.2))
+            offset_mod = int(SAMPLE_RATE*(offset+0.2))
             r = np.random.randint(0,len(audioData)-offset_mod)
             ri = np.random.randint(0,offset_mod - offset_frame)
             rj = np.random.randint(0,offset_mod - offset_frame)
@@ -57,19 +58,15 @@ class NeuralfpDataset(Dataset):
             
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore")
-                audioData_i, audioData_j = self.transform(org.numpy(), rep.numpy(), sr)
+                audioData_i, audioData_j = self.transform(org.numpy(), rep.numpy())
             # print(audioData.shape,audioData_i.shape,audioData_j.shape)
             audioData_i = torch.from_numpy(audioData_i)
             audioData_j = torch.from_numpy(audioData_j)
     
-            audioData_i = resampler(audioData_i)
             specData_i = spec_func(audioData_i)
             specData_i = torchaudio.transforms.AmplitudeToDB()(specData_i)
-            # print(specData_i.size(-1))
             specData_i = F.pad(specData_i, (target_len - specData_i.size(-1), 0))
-        
     
-            audioData_j = resampler(audioData_j)
             specData_j = spec_func(audioData_j)
             specData_j = torchaudio.transforms.AmplitudeToDB()(specData_j)
             specData_j = F.pad(specData_j, (target_len - specData_j.size(-1), 0))
@@ -91,4 +88,3 @@ class NeuralfpDataset(Dataset):
     def __len__(self):
         return len(self.filenames)
             
-    

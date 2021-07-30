@@ -14,7 +14,7 @@ root = os.path.dirname(__file__)
 
 validation_dir = os.path.join(root,'data/fma_5sec_2K')
 ir_dir = os.path.join(root,'data/ir_filters')
-noise_dir = os.path.join(root,'data/noise')
+noise_dir = os.path.join(root,'data/Noises_unsampled')
 data_dir = os.path.join(root,'data/fma_10k')
 json_path = os.path.join(root,'data/fma_10k.json')
 
@@ -83,7 +83,9 @@ while i < iters:
     r2 = np.random.randint(0,len(audio)-offset_frame)
     
     audioData = audio[r2:r2+offset_frame]
-    augmented_samples = augment(samples=audioData, sample_rate=SAMPLE_RATE)
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        augmented_samples = augment(samples=audioData, sample_rate=SAMPLE_RATE)
     fname = ref[str(r1)].split(".mp3")[0] + "-" + str(uuid.uuid4()) + ".wav"
     sf.write(os.path.join(validation_dir,fname), augmented_samples, SAMPLE_RATE, format='WAV')
     i+=1

@@ -31,5 +31,5 @@ class TransformNeuralfp:
             # Mp3Compression()
             ])
             
-    def __call__(self, x_i, x_j, sr):
-        return self.train_transform_i(x_i, sr), self.train_transform_j(x_j, sr)
+    def __call__(self, x_i, x_j):
+        return self.train_transform_i(x_i), self.train_transform_j(x_j)
