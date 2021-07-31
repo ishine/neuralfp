@@ -15,8 +15,8 @@ root = os.path.dirname(__file__)
 
 ir_dir = os.path.join(root,'data/ir_filters')
 noise_dir = os.path.join(root,'data/Noises_unsampled')
-data_dir = os.path.join(root,'data/fma_10k')
-json_path = os.path.join(root,'data/fma_10k.json')
+data_dir = os.path.join(root,'data/test_data/fma_large')
+json_path = os.path.join(root,'data/fma_large.json')
 
 
 # for fname in os.listdir(validation_dir):
@@ -24,7 +24,7 @@ json_path = os.path.join(root,'data/fma_10k.json')
 #     audio, sr = librosa.load(path, sr=8000, mono=True)
 #     if len(audio) < 80000:
 #         print(fname," : ",len(audio))
-offset_list = [1,2,3,6,10]
+offset_list = [1,2,3,5,6,10]
      
 for offset in offset_list:
     SAMPLE_RATE = 8000
