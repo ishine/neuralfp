@@ -5,7 +5,7 @@ import torch
 import argparse
 import faiss
 import json
-
+import shutil
 # Neuralfp
 from neuralfp.modules.data import NeuralfpDataset
 from neuralfp.modules.transformations import TransformNeuralfp
@@ -24,6 +24,8 @@ parser.add_argument('--query_dir', default='', type=str, metavar='PATH',
                     help='directory containing query dataset')
 parser.add_argument('--eval', default=False, type=bool,
                     help='flag for evaluating query search')
+parser.add_argument('--clean', default=False, type=bool,
+                    help='organize test data into a single directory')
 
 
 # Directories
@@ -50,7 +52,22 @@ def load_index(dirpath):
         json.dump(dataset, fp)
 
     return json_path
-        
+
+def clean_data(folder):
+    subfolders = [f.path for f in os.scandir(folder) if f.is_dir()]
+
+    for sub in subfolders:
+        for f in os.listdir(sub):
+            src = os.path.join(sub, f)
+            dst = os.path.join(folder, f)
+            shutil.move(src, dst)
+        shutil.rmtree(sub)
+    
+    test = os.listdir(folder)
+    for item in test:
+        if not (item.endswith(".wav") or item.endswith(".mp3")):
+            os.remove(os.path.join(folder, item))
+            
 def create_fp_db(dataloader, model):
     fp_db = {}
     print("=> Creating fingerprints...")
@@ -137,6 +154,9 @@ def main():
     args = parser.parse_args()
     if not os.path.exists(fp_dir):
         os.mkdir(fp_dir)
+        
+    if args.clean:
+        clean_data(args.test_dir)
         
     if args.fp_path == '':
         checkpoint_dir = os.path.join(root, args.model_path)
