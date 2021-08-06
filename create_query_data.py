@@ -5,10 +5,26 @@ import soundfile as sf
 import sys
 import os
 import json
+import argparse
 import uuid
 import warnings
 from audiomentations import Compose,Shift,PitchShift,TimeStretch,AddImpulseResponse,FrequencyMask,TimeMask,ClippingDistortion,AddBackgroundNoise,Gain
 
+
+
+parser = argparse.ArgumentParser(description='Script for creating Query dataset')
+parser.add_argument('--test_dir', default='', type=str, metavar='PATH',
+                    help='directory containing test dataset')
+parser.add_argument('--fp_path', default='', type=str, metavar='PATH',
+                    help='pre-computed fingerprint dataset path')
+parser.add_argument('--model_path', default='', type=str, metavar='PATH',
+                    help='path for pre-trained model')
+parser.add_argument('--query_dir', default='', type=str, metavar='PATH',
+                    help='directory containing query dataset')
+parser.add_argument('--eval', default=False, type=bool,
+                    help='flag for evaluating query search')
+parser.add_argument('--clean', default=False, type=bool,
+                    help='organize test data into a single directory')
 
 root = os.path.dirname(__file__)
 
@@ -17,6 +33,7 @@ ir_dir = os.path.join(root,'data/ir_filters')
 noise_dir = os.path.join(root,'data/Noises_unsampled')
 data_dir = os.path.join(root,'data/test_data/fma_large')
 json_path = os.path.join(root,'data/fma_large.json')
+
 
 
 # for fname in os.listdir(validation_dir):
