@@ -15,8 +15,8 @@ from audiomentations import Compose,Shift,PitchShift,TimeStretch,AddImpulseRespo
 parser = argparse.ArgumentParser(description='Script for creating Query dataset')
 parser.add_argument('--test_dir', default='', type=str, metavar='PATH',
                     help='directory containing test dataset')
-parser.add_argument('--fp_path', default='', type=str, metavar='PATH',
-                    help='pre-computed fingerprint dataset path')
+parser.add_argument('--length', nargs='+', type=int,
+                    help='length of query')
 parser.add_argument('--model_path', default='', type=str, metavar='PATH',
                     help='path for pre-trained model')
 parser.add_argument('--query_dir', default='', type=str, metavar='PATH',
@@ -41,7 +41,8 @@ json_path = os.path.join(root,'data/fma_large.json')
 #     audio, sr = librosa.load(path, sr=8000, mono=True)
 #     if len(audio) < 80000:
 #         print(fname," : ",len(audio))
-offset_list = [1,2,3,5,6,10]
+args = parser.parse_args()
+offset_list = args.length
      
 for offset in offset_list:
     SAMPLE_RATE = 8000
