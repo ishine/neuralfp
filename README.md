@@ -19,7 +19,7 @@ python3 -m venv env
 source env/bin/activate
 pip install -r requirements.txt
 ```
-For comparison to the state-of-the-art, it is required to do the query matching on a large scale fingerprint dataset. For this purpose we use the ```fma_large.zip``` dataset published by [mdeff](https://github.com/mdeff/fma). As advised in the repository, the extraction of the dataset should be performed using [7zip](https://www.7-zip.org/download.html).
+For comparison to the state-of-the-art, it is required to do the query matching on a large scale fingerprint dataset. For this purpose we use the ```fma_large.zip``` as the test dataset, which is published by [mdeff](https://github.com/mdeff/fma). As advised in the repository, the extraction of the test dataset should be performed using [7zip](https://www.7-zip.org/download.html).
 ```shell
 cd data
 curl -O https://os.unil.cloud.switch.ch/fma/fma_large.zip
@@ -38,7 +38,7 @@ echo "c67b69ea232021025fca9231fc1c7c1a063ab50b  fma_medium.zip"   | sha1sum -c -
 ### Computing fingerprint dataset
 ```shell
 cd ../model
-gdown https://drive.google.com/uc?id=12sCEepSwqbw6jbeJPO1CoTgRULYUj7Gg
+gdown https://drive.google.com/uc?id=1udaJj13tZnj2rHXB8OUDB2ctIjrkY0Zr
 cd ..
 ```
 To specify CUDA device ```1``` for example, you would set the ```CUDA_VISIBLE_DEVICES``` using
@@ -51,8 +51,28 @@ export CUDA_VISIBLE_DEVICES=0,1
 ```
 Finally, run the scripts to compute fingerprints
 ```shell
-python test.py --test_dir=/PATH/TO/DATASET --model_path=model/model_au_epoch_480.pth --clean=True
+python test.py --test_dir=/PATH/TO/TEST/DATASET --model_path=model/model_au_epoch_480.pth --clean=True
 ```
+## Query Matching
+
+Query searching and matching is performed using the ```faiss``` [library](https://github.com/facebookresearch/faiss). Let us create a noisy query dataset from a subset of the test dataset.
+```shell
+cd data
+gdown https://drive.google.com/uc?id=1CDUoyK4nHdpPyuOG7zJ6MLcRY4F_2jml
+unzip augmentation_datasets.zip
+cd ..
+python create_query_data.py --length 5 --test_dir=/PATH/TO/TEST/DATASET --noise_dir=data/augmentatation_datasets/noise
+```
+Calculating top-1 hit rate on the query dataset
+```shell
+python test.py --fp_path=fingerprints/fma_large_au.pt --query_dir=data/fma_5sec_2K --model_path=model/model_au_epoch_480.pth --eval=True
+```
+or 
+```
+python test.py --fp_path=fingerprints/fma_medium_au.pt --query_dir=data/fma_5sec_2K --model_path=model/model_au_epoch_480.pth --eval=True
+```
+
+NOTE: The repository is currently in development. The framework would be soon made available as a package along with the performance report against the state-of-the-art. 
 
 
 
