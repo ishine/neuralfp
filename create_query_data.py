@@ -15,23 +15,19 @@ from audiomentations import Compose,Shift,PitchShift,TimeStretch,AddImpulseRespo
 parser = argparse.ArgumentParser(description='Script for creating Query dataset')
 parser.add_argument('--test_dir', default='', type=str, metavar='PATH',
                     help='directory containing test dataset')
+parser.add_argument('--noise_dir', default='', type=str, metavar='PATH',
+                    help='directory containing noise data')
+parser.add_argument('--ir_dir', default='', type=str, metavar='PATH',
+                    help='directory containing IR data')
 parser.add_argument('--length', nargs='+', type=int,
                     help='length of query')
-parser.add_argument('--model_path', default='', type=str, metavar='PATH',
-                    help='path for pre-trained model')
-parser.add_argument('--query_dir', default='', type=str, metavar='PATH',
-                    help='directory containing query dataset')
-parser.add_argument('--eval', default=False, type=bool,
-                    help='flag for evaluating query search')
-parser.add_argument('--clean', default=False, type=bool,
-                    help='organize test data into a single directory')
 
 root = os.path.dirname(__file__)
 
 
-ir_dir = os.path.join(root,'data/ir_filters')
-noise_dir = os.path.join(root,'data/Noises_unsampled')
-data_dir = os.path.join(root,'data/test_data/fma_large')
+# ir_dir = os.path.join(root,'data/ir_filters')
+# noise_dir = os.path.join(root,'data/Noises_unsampled')
+# data_dir = os.path.join(root,'data/test_data/fma_large')
 json_path = os.path.join(root,'data/fma_large.json')
 
 
@@ -43,19 +39,23 @@ json_path = os.path.join(root,'data/fma_large.json')
 #         print(fname," : ",len(audio))
 args = parser.parse_args()
 offset_list = args.length
-     
+data_dir = args.test_dir
+noise_dir = args.noise_dir
+ir_dir = args.ir_dir
+
+dataset = {}
+idx = 0
+for filename in os.listdir(data_dir):
+  if filename.endswith(".wav") or filename.endswith(".mp3"): 
+    dataset[idx] = filename
+    idx += 1
+with open(json_path, 'w') as fp:
+    json.dump(dataset, fp)
+ 
 for offset in offset_list:
     SAMPLE_RATE = 8000
     
     validation_dir = os.path.join(root,'data/fma_'+str(offset)+'sec_2K')
-    # dataset = {}
-    # idx = 0
-    # for filename in os.listdir(data_dir):
-    #   if filename.endswith(".wav"): 
-    #     dataset[idx] = filename
-    #     idx += 1
-    # with open(json_path, 'w') as fp:
-    #     json.dump(dataset, fp)
         
     
     if not os.path.exists(validation_dir):
