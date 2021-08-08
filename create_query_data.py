@@ -39,6 +39,7 @@ json_path = os.path.join(root,'data/fma_large.json')
 #         print(fname," : ",len(audio))
 args = parser.parse_args()
 offset_list = args.length
+print(offset_list)
 data_dir = args.test_dir
 noise_dir = args.noise_dir
 ir_dir = args.ir_dir
