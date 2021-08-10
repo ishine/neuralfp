@@ -25,11 +25,11 @@ class TransformNeuralfp:
             # AddImpulseResponse(ir_path=ir_dir, p=0.8),
             FrequencyMask(min_frequency_band=0.1, max_frequency_band=0.5,p=0.8),
             TimeMask(min_band_part=0.1, max_band_part=0.5),
-            # ClippingDistortion(min_percentile_threshold=0, max_percentile_threshold=10),
+            ClippingDistortion(min_percentile_threshold=0, max_percentile_threshold=10),
             AddBackgroundNoise(sounds_path=noise_dir, min_snr_in_db=0, max_snr_in_db=7,p=0.9),
             # Gain(),
             # Mp3Compression()
             ])
             
     def __call__(self, x_i, x_j):
-        return self.train_transform_i(x_i), self.train_transform_j(x_j)
+        return self.train_transform_i(x_i, sample_rate=self.sample_rate), self.train_transform_j(x_j, sample_rate=self.sample_rate)
