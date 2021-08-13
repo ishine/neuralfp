@@ -43,15 +43,17 @@ def load_index(dirpath):
     dataset = {}
     idx = 0
     json_path = os.path.join(data_dir, dirpath.split('/')[-1] + ".json")
-
-    for filename in os.listdir(dirpath):
-      if filename.endswith(".wav") or filename.endswith(".mp3"): 
-        dataset[idx] = filename
-        idx += 1
-    with open(json_path, 'w') as fp:
-        json.dump(dataset, fp)
-
+    
+    if not os.path.exists(json_path):
+        for filename in os.listdir(dirpath):
+          if filename.endswith(".wav") or filename.endswith(".mp3"): 
+            dataset[idx] = filename
+            idx += 1
+        with open(json_path, 'w') as fp:
+            json.dump(dataset, fp)
+    
     return json_path
+
 
 def clean_data(folder):
     subfolders = [f.path for f in os.scandir(folder) if f.is_dir()]
@@ -165,6 +167,7 @@ def main():
         model.load_state_dict(checkpoint['state_dict'])
         print("=> Loading pre-trained model")
         json_dir = load_index(args.test_dir)
+        # json_dir = 'data/fma_large.json'
         test_dataset = NeuralfpDataset(path=args.test_dir, json_dir=json_dir, validate=True)
         test_loader = torch.utils.data.DataLoader(
             test_dataset, batch_size=1, shuffle=False,

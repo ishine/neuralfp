@@ -44,14 +44,14 @@ data_dir = args.test_dir
 noise_dir = args.noise_dir
 ir_dir = args.ir_dir
 
-dataset = {}
-idx = 0
-for filename in os.listdir(data_dir):
-  if filename.endswith(".wav") or filename.endswith(".mp3"): 
-    dataset[idx] = filename
-    idx += 1
-with open(json_path, 'w') as fp:
-    json.dump(dataset, fp)
+# dataset = {}
+# idx = 0
+# for filename in os.listdir(data_dir):
+#   if filename.endswith(".wav") or filename.endswith(".mp3"): 
+#     dataset[idx] = filename
+#     idx += 1
+# with open(json_path, 'w') as fp:
+#     json.dump(dataset, fp)
  
 for offset in offset_list:
     SAMPLE_RATE = 8000
