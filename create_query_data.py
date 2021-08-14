@@ -28,7 +28,7 @@ root = os.path.dirname(__file__)
 # ir_dir = os.path.join(root,'data/ir_filters')
 # noise_dir = os.path.join(root,'data/Noises_unsampled')
 # data_dir = os.path.join(root,'data/test_data/fma_large')
-json_path = os.path.join(root,'data/fma_large.json')
+json_path = os.path.join(root,'data/genres.json')
 
 
 
@@ -56,7 +56,7 @@ ir_dir = args.ir_dir
 for offset in offset_list:
     SAMPLE_RATE = 8000
     
-    validation_dir = os.path.join(root,'data/fma_'+str(offset)+'sec_2K')
+    validation_dir = os.path.join(root,'data/genres_'+str(offset)+'sec_5H')
         
     
     if not os.path.exists(validation_dir):
