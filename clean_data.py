@@ -7,13 +7,13 @@ import soundfile as sf
 root = os.path.dirname(__file__)
 
 data_dir = data_dir = os.path.join(root,"data/test_data/fma_large")
-test_dir = os.path.join(root,"data/test_data/5K_subset")
+test_dir = os.path.join(root,"data/test_data/10K_subset")
 json_path = os.path.join(root,"data/fma_large.json")
 
 if not os.path.exists(test_dir):
     os.mkdir(test_dir)
     
-iters = 5000
+iters = 10000
 i = 0
 with open(json_path) as f:
     ref = json.load(f)
@@ -25,6 +25,7 @@ while i < iters:
              audio, sr = librosa.load(fpath, sr=8000, mono=True)
      except Exception:
          i+=1
+         iters+=1
          continue
     
      dst = os.path.join(test_dir,ref[str(i)])
