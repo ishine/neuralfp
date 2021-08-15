@@ -3,7 +3,7 @@ import librosa
 import random
 import json
 import warnings
-import shutil
+import soundfile as sf
 
 root = os.path.dirname(__file__)
 
@@ -29,7 +29,7 @@ while i < iters:
          continue
     
      dst = os.path.join(test_dir,ref[str(r1)])
-     shutil.copy2(fpath, dst)
+     sf.write(dst, audio, sr, format='WAV')
      if i % 50 == 0:
          print(f"Step [{i}/{iters}]")
      i+=1
