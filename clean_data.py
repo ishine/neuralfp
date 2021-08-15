@@ -1,6 +1,5 @@
 import os
 import librosa
-import random
 import json
 import warnings
 import soundfile as sf
@@ -19,16 +18,16 @@ i = 0
 with open(json_path) as f:
     ref = json.load(f)
 while i < iters:
-     r1 = random.randrange(len(os.listdir(data_dir)))
-     fpath = os.path.join(data_dir, ref[str(r1)])
+     fpath = os.path.join(data_dir, ref[str(i)])
      try:
          with warnings.catch_warnings():
              warnings.simplefilter("ignore")
              audio, sr = librosa.load(fpath, sr=8000, mono=True)
      except Exception:
+         i+=1
          continue
     
-     dst = os.path.join(test_dir,ref[str(r1)])
+     dst = os.path.join(test_dir,ref[str(i)])
      sf.write(dst, audio, sr, format='WAV')
      if i % 50 == 0:
          print(f"Step [{i}/{iters}]")
