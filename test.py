@@ -144,7 +144,10 @@ def evaluate_hitrate(ref_db, query_db):
         idx = np.where(np.array(ref_list)>id)[0][0]
       
         query_name = list(query_db.keys())[r].split('.wav')[0].split('-')[0]
-        db_name = list(ref_db.keys())[idx].split('.mp3')[0]
+        if list(ref_db.keys())[0].endswith(".mp3"):
+            db_name = list(ref_db.keys())[idx].split('.mp3')[0]
+        else:
+            db_name = list(ref_db.keys())[idx].split('.wav')[0]
         if query_name == db_name:
               hit+=1
               
