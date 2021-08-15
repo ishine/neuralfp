@@ -2,7 +2,7 @@
 A PyTorch audio fingerprinting framework inspired from "Neural Audio Fingerprint for High-Specific Audio Retrieval Based on Contrastive Learning" by S. Chang et al.
 
 ## Creating fingerprint database using neuralfp
-Fingerprints can be generated from an audio dataset using the pre-trained model or framework can be trained in the dataset provided by the user. 
+Fingerprints can be generated from an audio dataset using the pre-trained model or the framework can be trained in the dataset provided by the user. 
 
 ### Setting up the environment and the dataset
 For using the framework, clone the repository:
