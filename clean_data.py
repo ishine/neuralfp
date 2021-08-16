@@ -3,6 +3,7 @@ import librosa
 import json
 import warnings
 import soundfile as sf
+import torchaudio
 
 root = os.path.dirname(__file__)
 
@@ -40,7 +41,7 @@ for i,fname in enumerate(flist):
     try:
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
-            audio, sr = librosa.load(fpath, sr=8000, mono=True)
+            audio, sr = torchaudio.load(fpath)
     except Exception:
         os.remove(fpath)
         del_list.append(fname)
