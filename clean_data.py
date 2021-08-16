@@ -34,7 +34,8 @@ json_path = os.path.join(root,"data/fma_large.json")
 #          print(f"Step [{i}/{iters}]")
 #      i+=1
 del_list = []
-for i,fname in enumerate(os.listdir(data_dir)):
+flist = os.listdir(data_dir)
+for i,fname in enumerate(flist):
     fpath = os.path.join(data_dir, fname)
     try:
         with warnings.catch_warnings():
