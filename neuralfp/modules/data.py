@@ -33,6 +33,7 @@ class NeuralfpDataset(Dataset):
         except Exception:
             print("Error loading:" + self.filenames[str(idx)])
             self.ignore_idx.append(idx)
+            # self.filenames.pop(str(idx))
             return self[idx+1]
 
         audioData = audio.mean(dim=0)
@@ -45,6 +46,7 @@ class NeuralfpDataset(Dataset):
         
         if len(audioData) <= offset_frame:
             self.ignore_idx.append(idx)
+            # self.filenames.pop(str(idx))
             return self[idx + 1]
         
         if not self.validate:
