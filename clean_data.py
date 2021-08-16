@@ -44,7 +44,7 @@ for i,fname in enumerate(flist):
     except Exception:
         os.remove(fpath)
         del_list.append(fname)
-    
-    print(f"Step [{i}/{len(os.listdir(data_dir))}]")
+    if i % 50 == 0:
+        print(f"Step [{i}/{len(os.listdir(data_dir))}]")
 print(del_list)
 
