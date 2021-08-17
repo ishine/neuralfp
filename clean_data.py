@@ -2,7 +2,7 @@ import os
 import librosa
 import json
 import warnings
-import soundfile as sf
+from scipy.io.wavfile import write
 import torchaudio
 
 root = os.path.dirname(__file__)
@@ -20,16 +20,17 @@ with open(json_path) as f:
     ref = json.load(f)
 while i < iters:
     fpath = os.path.join(data_dir, ref[str(i)])
-    try:
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore")
-            audio, sr = librosa.load(fpath)
-    except Exception:
-        i+=1
-        iters+=1
-        continue
+    # try:
+    #     with warnings.catch_warnings():
+    #         warnings.simplefilter("ignore")
+    #         audio, sr = librosa.load(fpath)
+    # except Exception:
+    #     i+=1
+    #     iters+=1
+    #     continue
+    audio, sr = torchaudio.load(fpath)
     dst = os.path.join(test_dir,ref[str(i)])
-    sf.write(dst, audio, sr, format='WAV')
+    write(dst, audio, sr)
     if i % 50 == 0:
         print(f"Step [{i}/{iters}]")
     i+=1
