@@ -8,33 +8,33 @@ import torchaudio
 
 root = os.path.dirname(__file__)
 
-data_dir = data_dir = os.path.join(root,"data/test_data/fma_large")
+data_dir = os.path.join(root,"data/test_data/fma_large")
 test_dir = os.path.join(root,"data/test_data/3K_subset")
 json_path = os.path.join(root,"data/fma_large.json")
 
-if not os.path.exists(test_dir):
-    os.mkdir(test_dir)
+# if not os.path.exists(test_dir):
+#     os.mkdir(test_dir)
     
-iters = 3000
-i = 0
-with open(json_path) as f:
-    ref = json.load(f)
-while i < iters:
-    fpath = os.path.join(data_dir, ref[str(i)])
-    # try:
-    #     with warnings.catch_warnings():
-    #         warnings.simplefilter("ignore")
-    #         audio, sr = librosa.load(fpath)
-    # except Exception:
-    #     i+=1
-    #     iters+=1
-    #     continue
-    audio, sr = torchaudio.load(fpath)
-    dst = os.path.join(test_dir,ref[str(i)])
-    write(dst, audio, sr, audio.astype(np.int16))
-    if i % 50 == 0:
-        print(f"Step [{i}/{iters}]")
-    i+=1
+# iters = 3000
+# i = 0
+# with open(json_path) as f:
+#     ref = json.load(f)
+# while i < iters:
+#     fpath = os.path.join(data_dir, ref[str(i)])
+#     # try:
+#     #     with warnings.catch_warnings():
+#     #         warnings.simplefilter("ignore")
+#     #         audio, sr = librosa.load(fpath)
+#     # except Exception:
+#     #     i+=1
+#     #     iters+=1
+#     #     continue
+#     audio, sr = torchaudio.load(fpath)
+#     dst = os.path.join(test_dir,ref[str(i)])
+#     write(dst, audio, sr, audio.astype(np.int16))
+#     if i % 50 == 0:
+#         print(f"Step [{i}/{iters}]")
+#     i+=1
 
 
 
@@ -52,4 +52,17 @@ while i < iters:
 #     if i % 50 == 0:
 #         print(f"Step [{i}/{len(os.listdir(data_dir))}]")
 # print(del_list)
+
+    
+
+
+dataset = {}
+idx = 0
+for filename in os.listdir(data_dir)[:10000]:
+  if filename.endswith(".wav") or filename.endswith(".mp3"): 
+    dataset[idx] = filename
+    idx += 1
+with open(json_path, 'w') as fp:
+    json.dump(dataset, fp)
+
 
