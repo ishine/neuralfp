@@ -1,4 +1,5 @@
 import os
+import numpy as np
 import librosa
 import json
 import warnings
@@ -8,13 +9,13 @@ import torchaudio
 root = os.path.dirname(__file__)
 
 data_dir = data_dir = os.path.join(root,"data/test_data/fma_large")
-test_dir = os.path.join(root,"data/test_data/30K_subset")
+test_dir = os.path.join(root,"data/test_data/3K_subset")
 json_path = os.path.join(root,"data/fma_large.json")
 
 if not os.path.exists(test_dir):
     os.mkdir(test_dir)
     
-iters = 30000
+iters = 3000
 i = 0
 with open(json_path) as f:
     ref = json.load(f)
@@ -30,7 +31,7 @@ while i < iters:
     #     continue
     audio, sr = torchaudio.load(fpath)
     dst = os.path.join(test_dir,ref[str(i)])
-    write(dst, audio, sr)
+    write(dst, audio, sr, audio.astype(np.int16))
     if i % 50 == 0:
         print(f"Step [{i}/{iters}]")
     i+=1
