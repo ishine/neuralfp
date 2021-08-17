@@ -56,7 +56,7 @@ ir_dir = args.ir_dir
 for offset in offset_list:
     SAMPLE_RATE = 8000
     
-    validation_dir = os.path.join(root,'data/10K_subset_'+str(offset)+'sec_5H')
+    validation_dir = os.path.join(root,'data/fma_large_'+str(offset)+'sec_5H')
         
     
     if not os.path.exists(validation_dir):
