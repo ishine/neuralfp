@@ -79,7 +79,7 @@ for offset in offset_list:
     
     i = 0
     while i < iters:
-        r1 = random.randrange(len(os.listdir(data_dir)))
+        r1 = random.randrange(len(ref.keys()))
         fpath = os.path.join(data_dir, ref[str(r1)])
         try:
             with warnings.catch_warnings():
