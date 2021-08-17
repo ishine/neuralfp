@@ -30,7 +30,7 @@ while i < iters:
       #     continue
       audio, sr = torchaudio.load(fpath)
       dst = os.path.join(test_dir,ref[str(i)])
-      sf.write(dst, audio, sr, format='WAV')
+      sf.write(dst, audio, sr)
       if i % 50 == 0:
           print(f"Step [{i}/{iters}]")
       i+=1
