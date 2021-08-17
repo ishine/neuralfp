@@ -8,13 +8,13 @@ import torchaudio
 root = os.path.dirname(__file__)
 
 data_dir = data_dir = os.path.join(root,"data/test_data/fma_large")
-test_dir = os.path.join(root,"data/test_data/10K_subset")
+test_dir = os.path.join(root,"data/test_data/30K_subset")
 json_path = os.path.join(root,"data/fma_large.json")
 
 if not os.path.exists(test_dir):
     os.mkdir(test_dir)
     
-iters = 10000
+iters = 30000
 i = 0
 with open(json_path) as f:
     ref = json.load(f)
