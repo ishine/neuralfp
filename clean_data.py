@@ -58,7 +58,7 @@ json_path = os.path.join(root,"data/fma_large.json")
 
 dataset = {}
 idx = 0
-for filename in os.listdir(data_dir)[:55000]:
+for filename in os.listdir(data_dir)[:65000]:
   if filename.endswith(".wav") or filename.endswith(".mp3"): 
     dataset[idx] = filename
     idx += 1
