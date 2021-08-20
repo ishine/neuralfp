@@ -68,7 +68,7 @@ def train(train_loader, model, optimizer, criterion):
 
 def save_ckp(state,epoch):
     if not os.path.exists(model_folder): os.makedirs(model_folder)
-    torch.save(state, "{}/model_ver3_epoch_{}.pth".format(model_folder,epoch))
+    torch.save(state, "{}/model_ver4_epoch_{}.pth".format(model_folder,epoch))
 
 def load_ckp(checkpoint_fpath, model, optimizer, scheduler):
     checkpoint = torch.load(checkpoint_fpath)
