@@ -18,6 +18,7 @@ class Encoder(nn.Module):
         self.in_channels = in_channels
         self.stride = stride
         self.kernel_size = kernel_size
+        self.si_cnn = si_cnn
         self.conv_layers = self.create_conv_layers(chang_fp, si_cnn)
         
     def forward(self, x):
