@@ -38,7 +38,7 @@ class TransformNeuralfp:
         ir_dir = self.ir_dir
         r1 = random.randrange(len(os.listdir(ir_dir)))
         fpath = os.path.join(ir_dir, os.listdir(ir_dir)[r1])
-        x_ir = librosa.load(fpath, sr=None)
+        x_ir, fs = librosa.load(fpath, sr=None)
         fftLength = np.maximum(len(x), len(x_ir))
         X = np.fft.fft(x, n=fftLength)
         X_ir = np.fft.fft(x_ir, n=fftLength)
