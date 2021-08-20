@@ -52,6 +52,24 @@ ir_dir = args.ir_dir
 #     idx += 1
 # with open(json_path, 'w') as fp:
 #     json.dump(dataset, fp)
+def irconv(ir_dir, x, p):
+    if random.random() < p:
+        r1 = random.randrange(len(os.listdir(ir_dir)))
+        fpath = os.path.join(ir_dir, os.listdir(ir_dir)[r1])
+        x_ir, fs = librosa.load(fpath, sr=None)
+        fftLength = np.maximum(len(x), len(x_ir))
+        X = np.fft.fft(x, n=fftLength)
+        X_ir = np.fft.fft(x_ir, n=fftLength)
+        x_aug = np.fft.ifft(np.multiply(X_ir, X))[0:len(x)].real
+        if np.max(np.abs(x_aug)) == 0:
+            pass
+        else:
+            x_aug = x_aug / np.max(np.abs(x_aug))  # Max-normalize
+    
+    else: 
+        x_aug = x
+    
+    return x_aug.astype(np.float32)
  
 for offset in offset_list:
     SAMPLE_RATE = 8000
@@ -63,7 +81,7 @@ for offset in offset_list:
       os.makedirs(validation_dir)
     with open(json_path) as f:
         ref = json.load(f)
-    iters = 500
+    iters = 100
     augment = Compose([
         # Shift(min_fraction=-0.2, max_fraction=0.2, rollover=False),
         # PitchShift(min_semitones=-2, max_semitones=2, p=0.5),
@@ -73,7 +91,7 @@ for offset in offset_list:
         # TimeMask(min_band_part=0.1, max_band_part=1),
         ClippingDistortion(),
         AddBackgroundNoise(sounds_path=noise_dir, min_snr_in_db=0, max_snr_in_db=7,p=1),
-        # Gain(),
+        Gain(),
         # Mp3Compression()
         ])
     
@@ -106,6 +124,7 @@ for offset in offset_list:
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
             augmented_samples = augment(samples=audioData, sample_rate=SAMPLE_RATE)
+            augmented_samples = irconv(ir_dir, augmented_samples, p=1)
         fname = ref[str(r1)].split(".mp3")[0] + "-" + str(uuid.uuid4()) + ".wav"
         sf.write(os.path.join(validation_dir,fname), augmented_samples, SAMPLE_RATE, format='WAV')
         i+=1

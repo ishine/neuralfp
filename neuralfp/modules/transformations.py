@@ -45,7 +45,6 @@ class TransformNeuralfp:
             X_ir = np.fft.fft(x_ir, n=fftLength)
             x_aug = np.fft.ifft(np.multiply(X_ir, X))[0:len(x)].real
             if np.max(np.abs(x_aug)) == 0:
-                print("divide by zero")
                 pass
             else:
                 x_aug = x_aug / np.max(np.abs(x_aug))  # Max-normalize
