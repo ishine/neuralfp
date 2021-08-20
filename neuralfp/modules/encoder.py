@@ -33,11 +33,11 @@ class Encoder(nn.Module):
 			layers.append(nn.Conv2d(in_channels=in_channels, out_channels=channels, kernel_size=(1,kernel_size), stride=(1,stride), padding=(0,1)))
 			shape[0] = channels
 			shape[2] = int(np.ceil(shape[2]/2))
-			layers.append(nn.LayerNorm(shape))
+# 			layers.append(nn.LayerNorm(shape))
 			layers.append(nn.ReLU())
 			layers.append(nn.Conv2d(in_channels=channels, out_channels=channels, kernel_size=(kernel_size,1), stride=(stride,1), padding=(1,0)))
 			shape[1] = int(np.ceil(shape[1]/2))
-			layers.append(nn.LayerNorm(shape))
+# 			layers.append(nn.LayerNorm(shape))
 			layers.append(nn.ReLU())
 			
 			in_channels = channels

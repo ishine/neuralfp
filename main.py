@@ -68,7 +68,7 @@ def train(train_loader, model, optimizer, criterion):
 
 def save_ckp(state,epoch):
     if not os.path.exists(model_folder): os.makedirs(model_folder)
-    torch.save(state, "{}/model_ver2_epoch_{}.pth".format(model_folder,epoch))
+    torch.save(state, "{}/model_ver3_epoch_{}.pth".format(model_folder,epoch))
 
 def load_ckp(checkpoint_fpath, model, optimizer, scheduler):
     checkpoint = torch.load(checkpoint_fpath)
@@ -124,7 +124,7 @@ def main():
     model = Neuralfp(encoder=encoder.Encoder()).to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max = 500, eta_min = 1e-7)
-    criterion = NT_Xent(batch_size, temperature = 0.1)
+    criterion = NT_Xent(batch_size, temperature = 0.05)
 
        
     if args.resume:
