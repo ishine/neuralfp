@@ -74,7 +74,7 @@ def irconv(ir_dir, x, p):
 for offset in offset_list:
     SAMPLE_RATE = 8000
     
-    validation_dir = os.path.join(root,'data/fma_large_'+str(offset)+'sec_5H')
+    validation_dir = os.path.join(root,'data/fma_large_'+str(offset)+'sec_2K')
         
     
     if not os.path.exists(validation_dir):
