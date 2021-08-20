@@ -2,6 +2,7 @@ from audiomentations import Compose,Shift,PitchShift,TimeStretch,AddImpulseRespo
 import numpy as np
 import os
 import random
+import librosa
 
 class TransformNeuralfp:
     
@@ -21,10 +22,10 @@ class TransformNeuralfp:
             ])
         
         self.train_transform_j = Compose([
-            Shift(min_fraction=-0.1, max_fraction=0.1, rollover=False),
+            # Shift(min_fraction=-0.1, max_fraction=0.1, rollover=False),
             # PitchShift(min_semitones=-2, max_semitones=2, p=0.5),
             # TimeStretch(min_rate=0.8, max_rate=1.2, p=0.5),
-            AddImpulseResponse(ir_path=ir_dir, p=0.8),
+            # AddImpulseResponse(ir_path=ir_dir, p=0.8),
             FrequencyMask(min_frequency_band=0.1, max_frequency_band=0.5,p=0.8),
             TimeMask(min_band_part=0.1, max_band_part=0.5),
             ClippingDistortion(min_percentile_threshold=0, max_percentile_threshold=10),
@@ -32,9 +33,22 @@ class TransformNeuralfp:
             # Gain(),
             # Mp3Compression()
             ])
-    def irconv(self):
+    def irconv(self, x):
         ir_dir = self.ir_dir
+        r1 = random.randrange(len(os.listdir(ir_dir)))
+        fpath = os.path.join(ir_dir, os.listdir(ir_dir)[r1])
+        x_ir = librosa.load(fpath, sr=None)
+        fftLength = np.maximum(len(x), len(x_ir))
+        X = np.fft.fft(x, n=fftLength)
+        X_ir = np.fft.fft(x_ir, n=fftLength)
+        x_aug = np.fft.ifft(np.multiply(X_ir, X))[0:len(x)].real
+        if np.max(np.abs(x_aug)) == 0:
+            pass
+        else:
+            x_aug = x_aug / np.max(np.abs(x_aug))  # Max-normalize
         
+        return x_aug
             
     def __call__(self, x_i, x_j):
+        x_j = self.irconv(x_j)
         return self.train_transform_i(x_i, sample_rate=self.sample_rate), self.train_transform_j(x_j, sample_rate=self.sample_rate)
