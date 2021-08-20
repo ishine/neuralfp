@@ -8,6 +8,7 @@ class TransformNeuralfp:
     
     def __init__(self, ir_dir, noise_dir, sample_rate):
         self.sample_rate = sample_rate
+        self.ir_dir = ir_dir
         self.train_transform_i = Compose([
             # Shift(min_fraction=-0.1, max_fraction=0.1, rollover=False),
             # PitchShift(min_semitones=-2, max_semitones=2, p=0.5),
