@@ -48,7 +48,7 @@ class TransformNeuralfp:
         else:
             x_aug = x_aug / np.max(np.abs(x_aug))  # Max-normalize
         
-        return x_aug
+        return x_aug.astype(np.float32)
             
     def __call__(self, x_i, x_j):
         x_j = self.irconv(x_j)
