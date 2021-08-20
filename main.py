@@ -14,6 +14,7 @@ import neuralfp.modules.encoder as encoder
 
 
 
+
 parser = argparse.ArgumentParser(description='Neuralfp Training')
 parser.add_argument('--epochs', default=300, type=int, metavar='N',
                     help='number of total epochs to run')
