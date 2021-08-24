@@ -82,7 +82,7 @@ for offset in offset_list:
       os.makedirs(validation_dir)
     with open(json_path) as f:
         ref = json.load(f)
-    iters = 500
+    iters = 2000
     augment = Compose([
         # Shift(min_fraction=-0.2, max_fraction=0.2, rollover=False),
         # PitchShift(min_semitones=-2, max_semitones=2, p=0.5),

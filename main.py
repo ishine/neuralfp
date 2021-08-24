@@ -125,7 +125,7 @@ def main():
     model = Neuralfp(encoder=encoder.Encoder()).to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max = 500, eta_min = 1e-7)
-    criterion = NT_Xent(batch_size, temperature = 0.05)
+    criterion = NT_Xent(batch_size, temperature = 0.1)
 
        
     if args.resume:
