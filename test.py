@@ -90,6 +90,24 @@ def create_fp_db(dataloader, model):
     
     return fp_db
 
+def compute_sequence_search(D,I):
+    D = 1 - np.array(D)
+    I = np.array(I)
+    I_pr = []
+    for i,r in enumerate(D):
+        I_pr.append([(x - i) for x in I[i]])
+    I_pr = np.array(I_pr)
+    cdt = np.unique(I_pr.flatten())
+    score = []
+    I_flat = I.flatten()
+    D_flat = D.flatten()
+    
+    for idx in cdt:
+        pos = np.where((I_flat >= idx) & (I_flat <= idx + len(D)))[0]
+        score.append(np.sum(D_flat[pos]))  
+
+    return cdt[np.argmax(score)], np.max(score)
+
 def evaluate_hitrate(ref_db, query_db):
     audio_idx = 0
     ref_list = []
@@ -122,8 +140,9 @@ def evaluate_hitrate(ref_db, query_db):
     print(D)
 
     print(I)
-    min_id = np.argmin(D.flatten())
-    ix = I.flatten()[min_id]
+    # min_id = np.argmin(D.flatten())
+    # ix = I.flatten()[min_id]
+    ix , sc = compute_sequence_search(D, I)
     
     # print("id: ",ix)
     # print(np.where(np.array(ref_list)>ix))
@@ -139,9 +158,11 @@ def evaluate_hitrate(ref_db, query_db):
     for i in range(len(query_db)):
         xq = list(query_db.values())[r].cpu().numpy()
         D, I = index.search(xq, k)
-        min_id = np.argmin(D.flatten())
-        id = I.flatten()[min_id]
+        # min_id = np.argmin(D.flatten())
+        # id = I.flatten()[min_id]
+        id , sc = compute_sequence_search(D, I)
         idx = np.where(np.array(ref_list)>id)[0][0]
+    
       
         query_name = list(query_db.keys())[r].split('.wav')[0].split('-')[0]
         if list(ref_db.keys())[0].endswith(".mp3"):
