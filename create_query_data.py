@@ -126,6 +126,6 @@ for offset in offset_list:
             warnings.simplefilter("ignore")
             augmented_samples = augment(samples=audioData, sample_rate=SAMPLE_RATE)
             augmented_samples = irconv(ir_dir, augmented_samples, p=1)
-        fname = ref[str(r1)].split(".mp3")[0] + "-" + str(uuid.uuid4()) + "-" + str(r2) +".wav"
+        fname = ref[str(r1)].split(".mp3")[0] + "-" + str(uuid.uuid4()) +".wav"
         sf.write(os.path.join(validation_dir,fname), augmented_samples, SAMPLE_RATE, format='WAV')
         i+=1
