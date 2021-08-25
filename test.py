@@ -107,7 +107,7 @@ def compute_sequence_search(D,I):
         pos = np.where((I_flat >= idx) & (I_flat <= idx + len(D)))[0]
         score.append(np.sum(D_flat[pos]))  
 
-    return str(cdt[np.argmax(score)]), str(round(np.max(score), 3))
+    return cdt[np.argmax(score)], str(round(np.max(score), 3))
 
 def evaluate_hitrate(ref_db, query_db):
     audio_idx = 0
@@ -173,7 +173,7 @@ def evaluate_hitrate(ref_db, query_db):
             db_name = list(ref_db.keys())[idx].split('.wav')[0]
         if query_name == db_name:
               hit+=1
-        result[idx] = sc      
+        result[str(idx)] = sc      
     print(f"Hit rate = {hit}/{len(query_db)}")
     print(hit*1.0/len(query_db))
     
