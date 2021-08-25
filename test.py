@@ -35,6 +35,7 @@ data_dir = os.path.join(root,"data")
 ir_dir = os.path.join(root,'data/ir_filters')
 noise_dir = os.path.join(root,'data/noise')
 fp_dir = os.path.join(root,'fingerprints')
+result_dir = os.path.join(root,'results')
 
 
 device = torch.device("cuda")
@@ -155,6 +156,7 @@ def evaluate_hitrate(ref_db, query_db):
     print("Computing hit-rate...")
     
     hit = 0
+    result = {}
     for i in range(len(query_db)):
         xq = list(query_db.values())[r].cpu().numpy()
         D, I = index.search(xq, k)
@@ -162,7 +164,7 @@ def evaluate_hitrate(ref_db, query_db):
         # id = I.flatten()[min_id]
         id , sc = compute_sequence_search(D, I)
         idx = np.where(np.array(ref_list)>id)[0][0]
-    
+        
       
         query_name = list(query_db.keys())[r].split('.wav')[0].split('-')[0]
         if list(ref_db.keys())[0].endswith(".mp3"):
@@ -171,9 +173,13 @@ def evaluate_hitrate(ref_db, query_db):
             db_name = list(ref_db.keys())[idx].split('.wav')[0]
         if query_name == db_name:
               hit+=1
-              
+        result[db_name] = [idx,sc]      
     print(f"Hit rate = {hit}/{len(query_db)}")
     print(hit*1.0/len(query_db))
+    
+    return result
+
+
 
 
 def main():
@@ -221,8 +227,11 @@ def main():
         query_db = create_fp_db(query_loader, model)
         torch.save(query_db, os.path.join(fp_dir, args.query_dir.split('/')[-1] + "_ver3.pt"))
         
-        evaluate_hitrate(ref_db, query_db)
-        
+        result = evaluate_hitrate(ref_db, query_db)
+        result_path = os.path.join(result_dir, args.query_dir.split('/')[-1] + "_ver3.json")
+        with open(result_path, 'w') as fp:
+            json.dump(result, fp)
+
 
 if __name__ == '__main__':
     main()
