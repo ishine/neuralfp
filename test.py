@@ -155,10 +155,11 @@ def evaluate_hitrate(ref_db, query_db):
     
     print("Computing hit-rate...")
     
-    hit = 0
+    hit_song = 0
+    hit_seg = 0
     result = {}
     for i in range(len(query_db)):
-        xq = list(query_db.values())[r].cpu().numpy()
+        xq = list(query_db.values())[i].cpu().numpy()
         D, I = index.search(xq, k)
         # min_id = np.argmin(D.flatten())
         # id = I.flatten()[min_id]
@@ -166,16 +167,17 @@ def evaluate_hitrate(ref_db, query_db):
         idx = np.where(np.array(ref_list)>id)[0][0]
         
       
-        query_name = list(query_db.keys())[r].split('.wav')[0].split('-')[0]
+        query_name = list(query_db.keys())[i].split('.wav')[0].split('-')[0]
+        # offset = int(list(query_db.keys())[i].split('.wav')[0].split('-')[-1])
         if list(ref_db.keys())[0].endswith(".mp3"):
             db_name = list(ref_db.keys())[idx].split('.mp3')[0]
         else:
             db_name = list(ref_db.keys())[idx].split('.wav')[0]
         if query_name == db_name:
-              hit+=1
+              hit_song += 1
         result[str(idx)] = sc      
-    print(f"Hit rate = {hit}/{len(query_db)}")
-    print(hit*1.0/len(query_db))
+    print(f"Hit rate = {hit_song}/{len(query_db)}")
+    print(hit_song*1.0/len(query_db))
     
     return result
 
