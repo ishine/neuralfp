@@ -107,7 +107,7 @@ def compute_sequence_search(D,I):
         pos = np.where((I_flat >= idx) & (I_flat <= idx + len(D)))[0]
         score.append(np.sum(D_flat[pos]))  
 
-    return cdt[np.argmax(score)], np.max(score)
+    return np.float32(cdt[np.argmax(score)]), np.float32(np.max(score))
 
 def evaluate_hitrate(ref_db, query_db):
     audio_idx = 0
