@@ -90,7 +90,7 @@ for offset in offset_list:
         # AddImpulseResponse(ir_path=ir_dir, p=1),
         # FrequencyMask(min_frequency_band=0.1, max_frequency_band=0.5,p=1),
         # TimeMask(min_band_part=0.1, max_band_part=1),
-        ClippingDistortion(),
+        # ClippingDistortion(),
         AddBackgroundNoise(sounds_path=noise_dir, min_snr_in_db=0, max_snr_in_db=7,p=1),
         # Gain(),
         # Mp3Compression()
