@@ -9,7 +9,7 @@ from torchaudio.transforms import MelSpectrogram
 
 offset = 1.0
 SAMPLE_RATE = 8000
-target_len = 48
+target_len = 32
 
 class NeuralfpDataset(Dataset):
     def __init__(self, path, json_dir, transform=None, validate=False):
