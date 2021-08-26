@@ -28,7 +28,7 @@ root = os.path.dirname(__file__)
 model_folder = os.path.join(root,"model")
 data_dir = os.path.join(root,"data/fma_10k")
 # json_dir = os.path.join(root,"data/fma_10k.json")
-ir_dir = os.path.join(root,'data/IR_unsampled')
+ir_dir = os.path.join(root,'data/ir_filters')
 noise_dir = os.path.join(root,'data/noise')
 
 device = torch.device("cuda")
