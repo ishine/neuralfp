@@ -92,7 +92,7 @@ for offset in offset_list:
         # TimeMask(min_band_part=0.1, max_band_part=1),
         ClippingDistortion(),
         AddBackgroundNoise(sounds_path=noise_dir, min_snr_in_db=0, max_snr_in_db=7,p=1),
-        Gain(),
+        # Gain(),
         # Mp3Compression()
         ])
     
