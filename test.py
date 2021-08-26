@@ -141,9 +141,9 @@ def evaluate_hitrate(ref_db, query_db):
     print(D)
 
     print(I)
-    min_id = np.argmin(D.flatten())
-    ix = I.flatten()[min_id]
-    # ix , sc = compute_sequence_search(D, I)
+    # min_id = np.argmin(D.flatten())
+    # ix = I.flatten()[min_id]
+    ix , sc = compute_sequence_search(D, I)
     
     # print("id: ",ix)
     # print(np.where(np.array(ref_list)>ix))
@@ -161,9 +161,9 @@ def evaluate_hitrate(ref_db, query_db):
     for i in range(len(query_db)):
         xq = list(query_db.values())[i].cpu().numpy()
         D, I = index.search(xq, k)
-        min_id = np.argmin(D.flatten())
-        id = I.flatten()[min_id]
-        # id , sc = compute_sequence_search(D, I)
+        # min_id = np.argmin(D.flatten())
+        # id = I.flatten()[min_id]
+        id , sc = compute_sequence_search(D, I)
         idx = np.where(np.array(ref_list)>id)[0][0]
         
       
