@@ -198,8 +198,8 @@ def main():
         model = Neuralfp(encoder=encoder.Encoder()).to(device)
         model.load_state_dict(checkpoint['state_dict'])
         print("=> Loading pre-trained model")
-        json_dir = load_index(args.test_dir)
-        # json_dir = 'data/fma_large.json'
+        # json_dir = load_index(args.test_dir)
+        json_dir = 'data/fma_large.json'
         test_dataset = NeuralfpDataset(path=args.test_dir, json_dir=json_dir, validate=True)
         test_loader = torch.utils.data.DataLoader(
             test_dataset, batch_size=1, shuffle=False,
