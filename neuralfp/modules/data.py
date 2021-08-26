@@ -75,17 +75,10 @@ class NeuralfpDataset(Dataset):
             return torch.unsqueeze(specData_i, 0), torch.unsqueeze(specData_j, 0)
         
         else:
-            chunks1 = list(torch.split(audioData, int(SAMPLE_RATE*offset)))
-            audio_offset = audioData[int(SAMPLE_RATE*offset/2): ]
-            chunks2 = list(torch.split(audio_offset, int(SAMPLE_RATE*offset)))
+            chunks = torch.split(audioData, int(SAMPLE_RATE*offset))
             spec = []
-            if chunks1[-1].size(0) < 1024:
-                chunks1 = chunks1[:-1]
-            if chunks2[-1].size(0) < 1024:
-                chunks2 = chunks2[:-1]  
-            
-            chunks = tuple([sub[item] for item in range(len(chunks2))
-                      for sub in [chunks1, chunks2]])
+            if chunks[-1].size(0) < 1024:
+                chunks = chunks[:-1]
             for data in chunks:
                   specData = spec_func(data)
                   specData = torchaudio.transforms.AmplitudeToDB()(specData)
