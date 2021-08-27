@@ -70,7 +70,7 @@ def train(train_loader, model, optimizer, criterion):
 
 def save_ckp(state,epoch):
     if not os.path.exists(model_folder): os.makedirs(model_folder)
-    torch.save(state, "{}/model_ver6_epoch_{}.pth".format(model_folder,epoch))
+    torch.save(state, "{}/model_ver7_epoch_{}.pth".format(model_folder,epoch))
 
 def load_ckp(checkpoint_fpath, model, optimizer, scheduler):
     checkpoint = torch.load(checkpoint_fpath)
@@ -123,7 +123,7 @@ def main():
         train_dataset, batch_size=batch_size, shuffle=True,
         num_workers=4, pin_memory=True, drop_last=True)
     
-    model = Neuralfp(encoder=encoder.Encoder(si_cnn=True)).to(device)
+    model = Neuralfp(encoder=encoder.Encoder()).to(device)
     optimizer = optim.Lamb(model.parameters(), 
                            lr=learning_rate,
                            betas=(0.9, 0.999),
