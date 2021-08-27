@@ -28,7 +28,7 @@ root = os.path.dirname(__file__)
 # ir_dir = os.path.join(root,'data/ir_filters')
 # noise_dir = os.path.join(root,'data/Noises_unsampled')
 # data_dir = os.path.join(root,'data/test_data/fma_large')
-json_path = os.path.join(root,'data/fma_large.json')
+json_path = os.path.join(root,'data/1K_subset.json')
 
 
 

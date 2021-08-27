@@ -10,7 +10,7 @@ root = os.path.dirname(__file__)
 
 data_dir = os.path.join(root,"data/test_data/fma_large")
 test_dir = os.path.join(root,"data/test_data/3K_subset")
-json_path = os.path.join(root,"data/fma_large.json")
+json_path = os.path.join(root,"data/1K_subset.json")
 
 
 
