@@ -33,9 +33,9 @@ class Encoder(nn.Module):
         kernel_size = self.kernel_size
         stride = self.stride
         shape = [1,128,32]
-        for channels in architecture:
+        for i,channels in enumerate(architecture):
             
-            if si_cnn:
+            if si_cnn and i==0:
                 layers.append(SI_Conv(in_channels=in_channels, out_channels=channels, kernel_size=[kernel_size,kernel_size], stride=[stride,stride], padding=[1,1]))
                 shape[0] = channels
                 shape[2] = int(np.ceil(shape[2]/2))
