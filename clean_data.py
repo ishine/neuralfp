@@ -19,7 +19,7 @@ json_path = os.path.join(root,"data/1K_subset.json")
 
 dataset = {}
 idx = 0
-for filename in os.listdir(data_dir)[:25000]:
+for filename in os.listdir(data_dir)[:1000]:
   print(filename)
   if filename.endswith(".wav") or filename.endswith(".mp3"): 
     dataset[idx] = filename
