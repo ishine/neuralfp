@@ -4,6 +4,7 @@ import numpy as np
 import torch
 import argparse
 import json
+import torch_optimizer as optim
 
 # Neuralfp
 from neuralfp.modules.data import NeuralfpDataset
@@ -104,7 +105,7 @@ def main():
     
     # Hyperparameters
     batch_size = 320
-    learning_rate = 1e-4
+    learning_rate = 0.001
     num_epochs = args.epochs
     
     if args.seed is not None:
@@ -123,7 +124,12 @@ def main():
         num_workers=4, pin_memory=True, drop_last=True)
     
     model = Neuralfp(encoder=encoder.Encoder(si_cnn=True)).to(device)
-    optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
+    optimizer = optim.Lamb(model.parameters(), 
+                           lr=learning_rate,
+                           betas=(0.9, 0.999),
+                           eps=1e-6,
+                           weight_decay=1e-6
+                           )
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max = 500, eta_min = 1e-7)
     criterion = NT_Xent(batch_size, temperature = 0.1)
 
