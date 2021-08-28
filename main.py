@@ -70,7 +70,7 @@ def train(train_loader, model, optimizer, criterion):
         loss_epoch += loss.item()
     return loss_epoch
 
-def save_ckp(state,epoch,ver):
+def save_ckp(state,ver,epoch):
     if not os.path.exists(model_folder): os.makedirs(model_folder)
     torch.save(state, "{}/model_ver{}_epoch_{}.pth".format(model_folder,ver,epoch))
 
