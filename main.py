@@ -126,12 +126,8 @@ def main():
         num_workers=4, pin_memory=True, drop_last=True)
     
     model = Neuralfp(encoder=encoder.Encoder(si_cnn=True)).to(device)
-    optimizer = optim.Lamb(model.parameters(), 
-                           lr=learning_rate,
-                           betas=(0.9, 0.999),
-                           eps=1e-6,
-                           weight_decay=1e-6
-                           )
+    optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
+
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max = 500, eta_min = 1e-7)
     criterion = NT_Xent(batch_size, temperature = 0.1)
 
