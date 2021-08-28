@@ -91,7 +91,7 @@ for offset in offset_list:
         # FrequencyMask(min_frequency_band=0.1, max_frequency_band=0.5,p=1),
         # TimeMask(min_band_part=0.1, max_band_part=1),
         # ClippingDistortion(),
-        AddBackgroundNoise(sounds_path=noise_dir, min_snr_in_db=0, max_snr_in_db=7,p=1),
+        AddBackgroundNoise(sounds_path=noise_dir, min_snr_in_db=0, max_snr_in_db=7,p=0.8),
         # Gain(),
         # Mp3Compression()
         ])
@@ -125,7 +125,7 @@ for offset in offset_list:
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
             augmented_samples = augment(samples=audioData, sample_rate=SAMPLE_RATE)
-            augmented_samples = irconv(ir_dir, augmented_samples, p=1)
+            augmented_samples = irconv(ir_dir, augmented_samples, p=0.8)
         fname = ref[str(r1)].split(".mp3")[0] + "-" + str(uuid.uuid4()) +".wav"
         sf.write(os.path.join(validation_dir,fname), augmented_samples, SAMPLE_RATE, format='WAV')
         i+=1
