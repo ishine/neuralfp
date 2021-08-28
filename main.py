@@ -107,7 +107,7 @@ def main():
     
     # Hyperparameters
     batch_size = 320
-    learning_rate = 0.001
+    learning_rate = 1e-4
     num_epochs = args.epochs
     
     if args.seed is not None:
