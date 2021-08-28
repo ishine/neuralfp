@@ -125,7 +125,7 @@ def main():
         train_dataset, batch_size=batch_size, shuffle=True,
         num_workers=4, pin_memory=True, drop_last=True)
     
-    model = Neuralfp(encoder=encoder.Encoder()).to(device)
+    model = Neuralfp(encoder=encoder.Encoder(si_cnn=True)).to(device)
     optimizer = optim.Lamb(model.parameters(), 
                            lr=learning_rate,
                            betas=(0.9, 0.999),
