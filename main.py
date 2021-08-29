@@ -23,8 +23,6 @@ parser.add_argument('--resume', default='', type=str, metavar='PATH',
                     help='path to latest checkpoint (default: none)')
 parser.add_argument('--seed', default=None, type=int,
                     help='seed for initializing training. ')
-parser.add_argument('--ver', default=None, type=int,
-                    help='model version. ')
 
 # Directories
 root = os.path.dirname(__file__)
@@ -70,9 +68,9 @@ def train(train_loader, model, optimizer, criterion):
         loss_epoch += loss.item()
     return loss_epoch
 
-def save_ckp(state,ver,epoch):
+def save_ckp(state,epoch):
     if not os.path.exists(model_folder): os.makedirs(model_folder)
-    torch.save(state, "{}/model_ver{}_epoch_{}.pth".format(model_folder,ver,epoch))
+    torch.save(state, "{}/model_ver6_epoch_{}.pth".format(model_folder,epoch))
 
 def load_ckp(checkpoint_fpath, model, optimizer, scheduler):
     checkpoint = torch.load(checkpoint_fpath)
@@ -164,7 +162,7 @@ def main():
                 'optimizer': optimizer.state_dict(),
                 'scheduler': scheduler.state_dict()
             }
-            save_ckp(checkpoint,args.ver,epoch)
+            save_ckp(checkpoint,epoch)
         scheduler.step()
     
   
