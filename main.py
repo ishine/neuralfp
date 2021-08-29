@@ -104,7 +104,7 @@ def main():
     json_dir = load_index(data_dir)
     
     # Hyperparameters
-    batch_size = 320
+    batch_size = 125
     learning_rate = 1e-4
     num_epochs = args.epochs
     
