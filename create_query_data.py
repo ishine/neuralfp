@@ -21,6 +21,8 @@ parser.add_argument('--ir_dir', default='', type=str, metavar='PATH',
                     help='directory containing IR data')
 parser.add_argument('--length', nargs='+', type=int,
                     help='length of query')
+parser.add_argument('--ps', default=0, type=int,
+                    help='pitch-shift factor')
 
 root = os.path.dirname(__file__)
 
@@ -74,7 +76,7 @@ def irconv(ir_dir, x, p):
 for offset in offset_list:
     SAMPLE_RATE = 8000
     
-    validation_dir = os.path.join(root,'data/fma_large_'+str(offset)+'sec_5H_ps_-1')
+    validation_dir = os.path.join(root,'data/fma_large_'+str(offset)+'sec_ps_'+str(args.ps))
     # validation_dir = os.path.join(root,'data/eval_test')
         
     
@@ -85,7 +87,7 @@ for offset in offset_list:
     iters = 500
     augment = Compose([
         # Shift(min_fraction=-0.2, max_fraction=0.2, rollover=False),
-        PitchShift(min_semitones=-1, max_semitones=-1, p=0.8),
+        PitchShift(min_semitones=args.ps, max_semitones=args.ps, p=0.8),
         # TimeStretch(min_rate=0.8, max_rate=3, p=0.5),
         # AddImpulseResponse(ir_path=ir_dir, p=1),
         # FrequencyMask(min_frequency_band=0.1, max_frequency_band=0.5,p=1),
@@ -122,10 +124,10 @@ for offset in offset_list:
         r2 = np.random.randint(0,len(audio)-offset_frame)
         
         audioData = audio[r2:r2+offset_frame]
-        # with warnings.catch_warnings():
-        #     warnings.simplefilter("ignore")
-        augmented_samples = augment(samples=audioData, sample_rate=SAMPLE_RATE)
-        augmented_samples = irconv(ir_dir, augmented_samples, p=0.8)
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            augmented_samples = augment(samples=audioData, sample_rate=SAMPLE_RATE)
+            augmented_samples = irconv(ir_dir, augmented_samples, p=0.8)
         fname = ref[str(r1)].split(".mp3")[0] + "-" + str(uuid.uuid4()) +".wav"
         sf.write(os.path.join(validation_dir,fname), augmented_samples, SAMPLE_RATE, format='WAV')
         i+=1
