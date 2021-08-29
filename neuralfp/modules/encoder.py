@@ -11,7 +11,6 @@ h = 1024
 u = 32
 v = int(h/d)
 chang_fp = [d,d,2*d,2*d,4*d,4*d,h,h]
-# chang_fp = [d]
 
 
 class Encoder(nn.Module):
