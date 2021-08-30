@@ -221,7 +221,8 @@ def main():
     if args.eval and os.path.isdir(args.query_dir):
         checkpoint_dir = os.path.join(root, args.model_path)
         checkpoint = torch.load(checkpoint_dir)
-        model = Neuralfp(encoder=encoder.Encoder()).to(device)
+        model = Neuralfp(encoder=encoder.Encoder())
+        model = nn.DataParallel(model).to(device)
         model.load_state_dict(checkpoint['state_dict'])
         json_dir = load_index(args.query_dir)
         query_dataset = NeuralfpDataset(path=args.query_dir, json_dir=json_dir, validate=True)
