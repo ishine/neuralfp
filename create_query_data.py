@@ -21,7 +21,7 @@ parser.add_argument('--ir_dir', default='', type=str, metavar='PATH',
                     help='directory containing IR data')
 parser.add_argument('--length', nargs='+', type=int,
                     help='length of query')
-parser.add_argument('--ps', default=0, type=int,
+parser.add_argument('--ts', default=0, type=int,
                     help='pitch-shift factor')
 
 root = os.path.dirname(__file__)
@@ -76,7 +76,7 @@ def irconv(ir_dir, x, p):
 for offset in offset_list:
     SAMPLE_RATE = 8000
     
-    validation_dir = os.path.join(root,'data/fma_large_'+str(offset)+'sec_ts_1')
+    validation_dir = os.path.join(root,'data/fma_large_'+str(offset)+'sec_ts_'+ args.ts)
     # validation_dir = os.path.join(root,'data/eval_test')
         
     
@@ -88,7 +88,7 @@ for offset in offset_list:
     augment = Compose([
         # Shift(min_fraction=-0.2, max_fraction=0.2, rollover=False),
         # PitchShift(min_semitones=args.ps, max_semitones=args.ps, p=0.8),
-        TimeStretch(min_rate=1.1, max_rate=1.1, p=0.8),
+        TimeStretch(min_rate=args.ts, max_rate=args.ts, p=0.8),
         # AddImpulseResponse(ir_path=ir_dir, p=1),
         # FrequencyMask(min_frequency_band=0.1, max_frequency_band=0.5,p=1),
         # TimeMask(min_band_part=0.1, max_band_part=1),
