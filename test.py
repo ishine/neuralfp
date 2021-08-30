@@ -209,7 +209,7 @@ def main():
             num_workers=0, pin_memory=True, drop_last=False)
         # print(next(iter(test_loader))[0].shape)
         ref_db = create_fp_db(test_loader, model)
-        torch.save(ref_db, os.path.join(fp_dir, args.test_dir.split('/')[-1] + "_ver6.pt"))
+        torch.save(ref_db, os.path.join(fp_dir, args.test_dir.split('/')[-1] + "_ver1.pt"))
 
         
         
@@ -232,10 +232,10 @@ def main():
             query_dataset, batch_size=1, shuffle=False,
             num_workers=0, pin_memory=True, drop_last=False)
         query_db = create_fp_db(query_loader, model)
-        torch.save(query_db, os.path.join(fp_dir, args.query_dir.split('/')[-1] + "_ver6.pt"))
+        torch.save(query_db, os.path.join(fp_dir, args.query_dir.split('/')[-1] + "_ver1.pt"))
         
         result = evaluate_hitrate(ref_db, query_db)
-        result_path = os.path.join(result_dir, args.query_dir.split('/')[-1] + "_ver6.json")
+        result_path = os.path.join(result_dir, args.query_dir.split('/')[-1] + "_ver1.json")
         with open(result_path, 'w') as fp:
             json.dump(result, fp)
 
