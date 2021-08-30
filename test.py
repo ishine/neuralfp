@@ -2,6 +2,7 @@ import os
 import random
 import numpy as np
 import torch
+import torch.nn as nn
 import argparse
 import faiss
 import json
@@ -195,7 +196,8 @@ def main():
     if args.fp_path == '':
         checkpoint_dir = os.path.join(root, args.model_path)
         checkpoint = torch.load(checkpoint_dir)
-        model = Neuralfp(encoder=encoder.Encoder()).to(device)
+        model = Neuralfp(encoder=encoder.Encoder())
+        model = nn.DataParallel(model).to(device)
         model.load_state_dict(checkpoint['state_dict'])
         print("=> Loading pre-trained model")
         # json_dir = load_index(args.test_dir)
