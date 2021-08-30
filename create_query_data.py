@@ -21,7 +21,7 @@ parser.add_argument('--ir_dir', default='', type=str, metavar='PATH',
                     help='directory containing IR data')
 parser.add_argument('--length', nargs='+', type=int,
                     help='length of query')
-parser.add_argument('--ts', default=0, type=int,
+parser.add_argument('--ts', default=0, type=float,
                     help='pitch-shift factor')
 
 root = os.path.dirname(__file__)
@@ -76,7 +76,7 @@ def irconv(ir_dir, x, p):
 for offset in offset_list:
     SAMPLE_RATE = 8000
     
-    validation_dir = os.path.join(root,'data/fma_large_'+str(offset)+'sec_ts_'+ args.ts)
+    validation_dir = os.path.join(root,'data/fma_large_'+str(offset)+'sec_ts_'+ str(args.ts))
     # validation_dir = os.path.join(root,'data/eval_test')
         
     
