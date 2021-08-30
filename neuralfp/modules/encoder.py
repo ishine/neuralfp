@@ -33,7 +33,7 @@ class Encoder(nn.Module):
         in_channels = self.in_channels
         kernel_size = self.kernel_size
         stride = self.stride
-        shape = [1,128,32]
+        shape = [1,256,32]
         for i,channels in enumerate(architecture):
             
             if si_cnn and i==0:
