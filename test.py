@@ -176,7 +176,7 @@ def evaluate_hitrate(ref_db, query_db):
             db_name = list(ref_db.keys())[idx].split('.wav')[0]
         if query_name == db_name:
               hit_song += 1
-        # result[str(idx)] = sc      
+        result[str(idx)] = sc      
     print(f"Hit rate = {hit_song}/{len(query_db)}")
     print(hit_song*1.0/len(query_db))
     
