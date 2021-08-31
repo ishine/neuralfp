@@ -38,7 +38,6 @@ class Encoder(nn.Module):
 		x = torch.cat((s1.squeeze(-2),s2.squeeze(-2),s3.squeeze(-2)),dim=-1)
 		x = self.relu(x)
 		x = self.pool(x)
-		print(x.shape)
 		x = self.conv_layers1(x)
 		x = self.pool(x)
 		x = self.conv_layers2(x)
@@ -53,7 +52,6 @@ class Encoder(nn.Module):
 		kernel_size = self.kernel_size
 		stride = self.stride
 		for channels in architecture:
-			print(shape)
 			layers.append(nn.Conv2d(in_channels=in_channels, out_channels=channels, kernel_size=(1,kernel_size), stride=(1,stride), padding=(0,1)))
 			shape[0] = channels
 			shape[2] = int(np.ceil(shape[2]/2))
